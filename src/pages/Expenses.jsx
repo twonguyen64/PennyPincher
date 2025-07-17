@@ -1,14 +1,16 @@
 import AccountDisplay from "../components/AccountDisplay";
-import TransactionInput from "../components/TransactionExpenseInput"
-import TransactionList from "../components/TransactionList"
+import PopupWithdrawExpense from "../components/Transaction-Page/PopupWithdrawExpense"
+import PopupWithdrawSavings from "../components/Transaction-Page/PopupWithdrawSavings"
+import TransactionList from "../components/Transaction-Page/TransactionList"
 import { useMoney } from "../contexts/MoneyContext";
 
 export default function Expenses() {
     const { totalExpenses } = useMoney();
     return (
         <div id="secondPage">
-            <AccountDisplay name="Expenses" balance={totalExpenses()} backgroundColor={'rgba(219, 231, 236, 1)'}/>
-            <TransactionInput type='expense'/>
+            <AccountDisplay colorFor='expenses' name="Total Expenses" balance={totalExpenses()}/>
+            <PopupWithdrawExpense/>
+            <PopupWithdrawSavings/>
             <TransactionList type='expense'/>
         </div>
     );

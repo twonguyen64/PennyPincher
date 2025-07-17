@@ -4,19 +4,15 @@ export const MainWrapperContext = createContext();
 
 export function MainWrapperProvider(props) {
   const [isSlideActive, setIsSlideActive] = createSignal(false);
-  const [showPopup, setShowPopup] = createSignal(false);
-  const [showSelectMultiple, setShowSelectMultiple] = createSignal(false);
-  const [showMergePopup, setShowMergePopup] = createSignal(false);
+  const [showPopup, setShowPopup] = createSignal('');
+  const [editMode, setEditMode] = createSignal(false);
 
   const value = {
     isSlideActive,
     setSlideActive: setIsSlideActive,
     
     showPopup, setShowPopup,
-
-    showSelectMultiple, setShowSelectMultiple,
-
-    showMergePopup, setShowMergePopup,
+    editMode, setEditMode,
   };
 
   return (

@@ -1,0 +1,106 @@
+#secondPage {
+  width: 100%;
+  flex-grow: 1;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  gap: 30px;
+  overflow: hidden;
+}
+
+#TransactionList {
+  display: flex;
+  flex-flow: column;
+  width: 90%;
+  flex-grow: 1;
+  overflow: hidden;
+  font-size: 1rem !important;
+}
+
+#TransactionList-upper-wrapper{
+  position: relative;
+  line-height: 2rem;
+  height: 3rem;
+  display: flex;
+  align-items: flex-end;
+}
+.edit-button {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.9rem !important;
+}
+.edit-button > img {
+  height: 1.1rem;
+  object-fit: contain;
+}
+  #TransactionList-upper-wrapper.edit {
+  font-size: 0.8rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  }
+  #TransactionList-upper-wrapper.edit > * {
+    text-align: center;
+    padding: 0.2rem 0.5rem;
+    line-height: 1.2rem;
+    border: 1px solid black;
+    border-radius: 6px;
+  }
+  #TransactionList-upper-wrapper.edit > img {
+  border: 0;
+  height: 1.5rem;
+  }
+
+#TransactionList-lower-wrapper {
+  border-top: 2px solid black;
+  display: flex;
+  flex-flow: column;
+  flex-grow: 1;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+  margin-bottom: 3rem;
+}
+
+.Transaction {
+  display: grid;
+  grid-template-columns: 1.8fr 1fr 1.2fr;
+  margin-bottom: 0.5rem;
+  background-color: antiquewhite;
+}
+.Transaction > * {
+  padding: 1rem 0.5rem;
+}
+.Transaction-name {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+  font-size: 0.9rem;
+}
+.Transaction input[type='checkbox'] {
+  width: 1rem;
+  height: 1rem;
+  accent-color: var(--savings-color);
+}
+.Transaction-name > span {
+  padding-left: 0.5rem;
+}
+.Transaction-amount {
+  font-size: 1rem;
+  text-align: right;
+}
+.Transaction-savings {
+  text-align: left;
+  font-style: italic;
+  font-size: 0.9rem;
+  color: var(--savings-color);
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+.Transaction-savings-value {
+  margin-left: auto;
+  text-align: right;
+}

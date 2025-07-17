@@ -1,15 +1,16 @@
 import { createEffect } from 'solid-js';
-import { useMoney } from '../contexts/MoneyContext';
-import { useMainWrapperContext } from '../contexts/MainWrapperContext'
-import { dateToStr } from '../helperFunctions';
+import { useMoney } from '../../contexts/MoneyContext';
+import { useMainWrapperContext } from '../../contexts/MainWrapperContext'
+ 
+import AccountDisplay from '../AccountDisplay';
 
-export default function TransactionExpenseInput() {
+export default function PopupWithdrawSavings() {
   let transactionNameRef, transactionAmountRef, blurRef;
-  const { takeMoneyOut, allowance, savings} = useMoney();
+  const { takeMoneyOut, savings} = useMoney();
   const { showPopup, setShowPopup } = useMainWrapperContext();
   
   createEffect(() => {
-    if (showPopup()) {
+    if (showPopup() === 'withdrawSavings') {
       if (transactionAmountRef) transactionAmountRef.focus();
       if (blurRef) blurRef.classList.add('blur');
     } 
@@ -22,27 +23,23 @@ export default function TransactionExpenseInput() {
   const handleCancel = () => {
     transactionNameRef.value = ''
     transactionAmountRef.value = ''
-    setShowPopup(false);
+    setShowPopup('');
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const withdrawlAmount = parseInt(transactionAmountRef.value);
     const todaysDate = new Date().toISOString().split('T')[0]
-    
-    //MAKE USER CHOOSE WHETHER THEY WANT TO WITHDRAW FROM SAVINGS TOO, OR NOT. OTHERWISE ALLOWANCE WILL BE NEGATIVE
-    const savingsAmount = (allowance() < withdrawlAmount) ? (Math.abs(allowance() - withdrawlAmount)) : 0
-    if (savings() - savingsAmount < 0) {
-      alert(`Your can't withdraw that much. There's $${savings()} left in your account. Try again.`)
+    if (savings() - withdrawlAmount < 0) {
+      alert(`Your can't withdraw more than you have. Try again.`)
       return
     }
     if (!isNaN(withdrawlAmount) && withdrawlAmount > 0) {
       const newTransaction = {
         type: 'expense',
         name: transactionNameRef.value,
-        amount: withdrawlAmount,
-        savings: savingsAmount,
-        date: dateToStr(todaysDate),
+        savings: withdrawlAmount,
+        date: todaysDate,
       };
       takeMoneyOut(newTransaction)
       
@@ -55,16 +52,17 @@ export default function TransactionExpenseInput() {
   };
 
   return (
-    <Show when={showPopup()}>
+    <Show when={showPopup() === 'withdrawSavings'}>
     <div id='background-blur-grid' ref={blurRef}></div>
     <div id='background-grid'>
       <div></div>
       <div class='fullscreen-popup-wrapper'>
         <div id='TransactionInput'>
-          <h4>Expense Entry</h4>
-          <form onSubmit={handleSubmit}>
+          <h3>Withdraw money from savings</h3>
+          <form onSubmit={handleSubmit} autocomplete="off">
+            <AccountDisplay colorFor='savings' name="Savings" balance={savings()}/>
             <div class='transactionField'>
-              <label for="transactionName">Name for expense</label>
+              <label for="transactionName">Name for withdrawl</label>
               <input
                 id="transactionName"
                 type="text"
@@ -72,7 +70,7 @@ export default function TransactionExpenseInput() {
               />
             </div>
             <div class='transactionField amount'>
-              <label for="transactionAmount">Amount to withdrawl</label>
+              <label for="transactionAmount">Amount:</label>
               <div style={'display: flex; justify-content: flex-end; align-items: center;'}>
                 <div>$</div>
                 <input
@@ -86,8 +84,8 @@ export default function TransactionExpenseInput() {
             </div>
 
             <div class='transactionField amount'>
-              <button onClick={handleCancel}>Cancel</button>
-              <button type="submit">Add Deposit</button>
+              <button class='popup-button' onClick={handleCancel}>Cancel</button>
+              <button class='popup-button' type="submit">Withdraw</button>
             </div>
           </form>
         </div>

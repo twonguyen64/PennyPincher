@@ -14,14 +14,23 @@ function AccountMenu(props) {
             setSlideActive(true);
         }
     };
-
+    let heading
+    switch (props.type) {
+        case 'income':
+            heading = 'Money going in'
+            break;
+        case 'expense':
+            heading = 'Money going out';
+            break;
+    }
     return (
         <div class="account-menu">
             <div class="account-menu-upper-wrapper">
+                <span style={'font-weight: bold'}>{heading}</span>
                 <div class='edit-button' onClick={goToPage}>
                     <img src={editImg} alt=""/>
-                    Edit {props.name}
-                    </div>
+                    View {props.name}
+                </div>
             </div>
             <AccountMenuType type={props.type}/>
         </div>

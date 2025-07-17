@@ -1,14 +1,17 @@
 import AccountDisplay from "../components/AccountDisplay";
-import TransactionInput from "../components/TransactionIncomeInput"
-import TransactionList from "../components/TransactionList"
+import PopupDepositIncome from "../components/Transaction-Page/PopupDepositIncome"
+import PopupDepositSavings from "../components/Transaction-Page/PopupDepositSavings"
+import TransactionList from "../components/Transaction-Page/TransactionList"
 import { useMoney } from "../contexts/MoneyContext";
 
 export default function Income() {
-    const { totalIncome } = useMoney();
+    const { totalIncome, totalSavings } = useMoney();
     return (
         <div id="secondPage">
-            <AccountDisplay name="Total Income" balance={totalIncome()} backgroundColor={'rgba(219, 236, 225, 1)'}/>
-            <TransactionInput type='income'/>
+            <AccountDisplay colorFor='income' name="Total Income" balance={totalIncome()}/>
+            <AccountDisplay colorFor='savings' name="Total Savings Contributed" balance={totalSavings()}/>
+            <PopupDepositIncome/>
+            <PopupDepositSavings/>
             <TransactionList type='income'/>
         </div>
     );

@@ -6,12 +6,16 @@ import { useMoney } from "../contexts/MoneyContext";
 export default function Home() {
     const { allowance, savings } = useMoney();
     return (
-        <home>
-            <AccountDisplay name="Savings" balance={savings()} backgroundColor={'rgb(236, 219, 222)'}/>
-            <AccountDisplay name="Allowance" balance={allowance()} backgroundColor={'rgb(236, 219, 222)'}/>
-
-            <AccountMenu type="income" />
-            <AccountMenu type="expenses" />
+        <home style="display: flex; flex-flow: column;">
+            <div id="Home-header">
+                Your account:
+            </div>
+            <AccountDisplay colorFor='savings' name="Savings" balance={savings()}/>
+            <AccountDisplay colorFor='allowance' name="Allowance" balance={allowance()}/>
+            <div id="account-menu-wrapper"> 
+                <AccountMenu type="income" />
+                <AccountMenu type="expense" />
+            </div>
         </home>
     );
 }

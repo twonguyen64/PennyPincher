@@ -10,11 +10,7 @@ function AccountDisplay(props) {
     }
 
     return (
-        <div class="account-display"
-        style={{
-            "background-color": props.backgroundColor || "#cceeff",
-        }}
-        >
+        <div class={"account-display " + props.colorFor}>
             <div class="account-name">{props.name}</div>
             <div class="account-balance">{sign}<span class="currencysign"> $</span>{props.balance}</div>
         </div>

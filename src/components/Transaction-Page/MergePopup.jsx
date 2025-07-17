@@ -1,9 +1,9 @@
 import { createEffect } from "solid-js";
-import { useMainWrapperContext } from "../contexts/MainWrapperContext";
-import { useMoney } from '../contexts/MoneyContext';
+import { useMainWrapperContext } from "../../contexts/MainWrapperContext";
+import { useMoney } from '../../contexts/MoneyContext';
 
 export default function MergePopup(props) {
-    const { showMergePopup, setShowMergePopup } = useMainWrapperContext();
+    const { showPopup, setShowPopup } = useMainWrapperContext();
     const { moneyIn, moneyOut, setMoneyIn, setMoneyOut, addMoneyIn, takeMoneyOut } = useMoney();
 
     let transactions, setTransactions, mergeEntry, blurRef
@@ -20,7 +20,7 @@ export default function MergePopup(props) {
     }
 
      createEffect(() => {
-        if (showMergePopup()) {
+        if (showPopup() === 'merge') {
             if (blurRef) blurRef.classList.add('blur');
         } 
     });
@@ -29,7 +29,6 @@ export default function MergePopup(props) {
         let sumAmount = 0
         let sumSavings = 0
         for (const transaction of transactions()) {
-            console.log(transaction)
             sumAmount += (transaction.amount || 0)
             sumSavings += (transaction.savings || 0)
         }
@@ -41,11 +40,11 @@ export default function MergePopup(props) {
             savings: sumSavings,
         };
         mergeEntry(newTransaction);
-        setShowMergePopup(false);
+        setShowPopup('');
     };
 
     return (
-        <Show when={showMergePopup()}>
+        <Show when={showPopup() === 'merge'}>
             <div id='background-blur-grid' ref={blurRef}></div>
             <div id='background-grid'>
                 <div></div>
@@ -53,7 +52,7 @@ export default function MergePopup(props) {
                     <div class="fullscreen-popup">
                         <p>You can merge together all transactions up until now to save space. This action is not reversible. Would you like to continue?</p>
                         <div class='transactionField amount'>
-                            <button onClick={() => setShowMergePopup(false)}>Cancel</button>
+                            <button onClick={() => setShowPopup('')}>Cancel</button>
                             <button onClick={() => mergeTransactions()}>Merge</button>
                         </div>
                     </div>

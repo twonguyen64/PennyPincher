@@ -1,0 +1,83 @@
+#Home-header {
+  align-self: flex-start;
+  padding-left: 2rem;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.account-display {
+  height: fit-content;
+  width: 70%;
+  border-radius: 10px;
+}
+.account-name {
+  padding: 0.6rem 1rem;
+  padding-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+.account-balance {
+  padding: 1.2rem 1.5rem;
+  padding-top: 0;
+  font-size: 1.6rem;
+  text-align: right;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+.currencysign {
+  font-size: 0.8em;
+  padding-right: 0.2rem;
+}
+
+form .account-display {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+form .account-balance {
+  font-size: 1.4rem;
+}
+
+.account-display { background-color: rgb(149, 195, 216);}
+.account-display.savings { background-color: rgb(149, 216, 166);}
+.account-display.allowance { background-color: rgb(149, 195, 216);}
+
+#account-menu-wrapper {
+  width: 85%;
+  flex-grow: 1;
+  display: flex; 
+  flex-flow: column;
+  justify-content: center;
+  gap: 10%;
+}
+.account-menu {
+  width: 100%;
+  height: fit-content;
+  font-size: 0.9rem;
+}
+.account-menu-upper-wrapper {
+  display: flex;
+  height: 1.6rem;
+  border-bottom: 1px solid black;
+}
+.account-menu-lower-wrapper{
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  padding: 5px;
+}
+.account-menu-add-button {
+  width: 12rem;
+  padding: 10px 0;
+  align-self: center;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.86rem;
+}
+.account-menu-add-button > img{
+  height: 1.6em;
+  padding: 0.2rem;
+  object-fit: contain;
+  border: 2px solid black;
+  border-radius: 6px;
+}

@@ -3,13 +3,14 @@ import { createContext, useContext, createSignal } from 'solid-js';
 export const MainWrapperContext = createContext();
 
 export function MainWrapperProvider(props) {
+  const [secondPage, setSecondPage] = createSignal('');
   const [isSlideActive, setIsSlideActive] = createSignal(false);
   const [showPopup, setShowPopup] = createSignal('');
   const [editMode, setEditMode] = createSignal(false);
 
   const value = {
-    isSlideActive,
-    setSlideActive: setIsSlideActive,
+    secondPage, setSecondPage,
+    isSlideActive, setSlideActive: setIsSlideActive,
     
     showPopup, setShowPopup,
     editMode, setEditMode,

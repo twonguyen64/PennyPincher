@@ -5,14 +5,11 @@ import { useNavigationContext } from '../contexts/NavigationContext'
 import { useMainWrapperContext } from '../contexts/MainWrapperContext'
 
 function AccountMenu(props) {
-    const { navigate } = useNavigationContext();
-    const { setSlideActive } = useMainWrapperContext();
+    const { setSecondPage, setSlideActive } = useMainWrapperContext();
     
-    const goToPage = () => {
-        if (navigate) {
-            navigate('/' + props.type);
-            setSlideActive(true);
-        }
+    const goToPage = (page) => {
+        setSecondPage(page)
+        setSlideActive(true);
     };
     let heading
     switch (props.type) {
@@ -27,7 +24,7 @@ function AccountMenu(props) {
         <div class="account-menu">
             <div class="account-menu-upper-wrapper">
                 <span style={'font-weight: bold'}>{heading}</span>
-                <div class='edit-button' onClick={goToPage}>
+                <div class='edit-button' onClick={goToPage(props.type)}>
                     <img src={editImg} alt=""/>
                     View {props.name}
                 </div>

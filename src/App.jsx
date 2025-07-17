@@ -1,3 +1,4 @@
+import { Switch, Match } from 'solid-js';
 import { useNavigate } from '@solidjs/router';
 import { NavigationContext } from './contexts/NavigationContext';
 import { MoneyProvider } from "./contexts/MoneyContext";
@@ -5,6 +6,8 @@ import { MainWrapperProvider, useMainWrapperContext } from "./contexts/MainWrapp
 
 import Footer from './Footer';
 import Home from './pages/Home';
+import Income from './pages/Income'
+import Expenses from './pages/Expenses'
 import gobackIcon from './assets/goback.png';
 import './styles/index.css';
 import './styles/home-page.css';
@@ -28,7 +31,7 @@ export default function App(props) {
 }
 
 function AppContentLayout(props) {
-  const { isSlideActive, setSlideActive } = useMainWrapperContext();
+  const { isSlideActive, setSlideActive, secondPage } = useMainWrapperContext();
   const handleBack = () => {
     setSlideActive(false);
   };
@@ -41,7 +44,11 @@ function AppContentLayout(props) {
           <div id='secondPageHeader'>
               <img id='backButton' src={gobackIcon} onClick={handleBack}/>
           </div>
-          {props.children}
+          <Switch fallback={<Income/>}>
+            <Match when={secondPage() === 'expenses'}>
+              <Expenses/>
+            </Match>
+          </Switch>
         </home>
       </div>
       <Footer/>

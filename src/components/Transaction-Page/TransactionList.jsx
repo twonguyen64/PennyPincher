@@ -1,7 +1,7 @@
 import addImg from '../../assets/add.png'
 import editImg from '../../assets/edit.png';
 import closeImg from '../../assets/close-button.png';
-import { createSignal, Switch, Match, For, createEffect } from 'solid-js';
+import { Switch, Match, For, createEffect } from 'solid-js';
 
 import { useMoney } from '../../contexts/MoneyContext';
 import { useMainWrapperContext } from '../../contexts/MainWrapperContext'

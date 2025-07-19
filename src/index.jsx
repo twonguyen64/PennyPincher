@@ -2,9 +2,8 @@ import { render } from 'solid-js/web';
 import { Router, Route } from '@solidjs/router';
 
 import App from './App';
-import EmptyPage from './pages/EmptyPage';
-import Income from './pages/Income';
-import Expenses from './pages/Expenses';
+import MainHome from './MainHome';
+import Budget from './Budget';
 const root = document.getElementById('root');
 
 if (import.meta.env.DEV && !(root instanceof HTMLElement)) {
@@ -15,8 +14,7 @@ if (import.meta.env.DEV && !(root instanceof HTMLElement)) {
 
 render(() => (
   <Router root={App}>
-    <Route path="/" component={EmptyPage} />
-    <Route path="/income" component={Income} />
-    <Route path="/expenses" component={Expenses} />
+    <Route path="/" component={MainHome} />
+    <Route path="/budget" component={Budget} />
   </Router>
 ), root);

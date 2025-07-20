@@ -16,7 +16,7 @@ function AccountMenu(props) {
         case 'income':
             heading = 'Money going in'
             break;
-        case 'expense':
+        case 'expenses':
             heading = 'Money going out';
             break;
     }
@@ -24,7 +24,7 @@ function AccountMenu(props) {
         <div class="account-menu">
             <div class="account-menu-upper-wrapper">
                 <span style={'font-weight: bold'}>{heading}</span>
-                <div class='edit-button' onClick={goToPage(props.type)}>
+                <div class='edit-button' onClick={() => goToPage(props.type)}>
                     <img src={editImg} alt=""/>
                     View {props.name}
                 </div>

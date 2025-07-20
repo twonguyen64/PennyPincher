@@ -3,7 +3,7 @@ import { NavigationContext } from './contexts/NavigationContext';
 import { MoneyProvider } from "./contexts/MoneyContext";
 import { MainWrapperProvider } from "./contexts/MainWrapperContext";
 
-import Footer from './Footer';
+import Footer from './pages/Footer';
 import './styles/index.css';
 import './styles/home-page.css';
 import './styles/transaction-page.css';

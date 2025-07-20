@@ -18,7 +18,6 @@ export default function PopupDepositIncome() {
     }
   });
   const radioButtHandler = () => {
-    console.log('sdsd')
     for (const radio of document.querySelectorAll('input[name="savingsMethod"]')) {
       if (radio.checked) radio.nextSibling.classList.remove('no-pointer-events')
       else radio.nextSibling.classList.add('no-pointer-events')
@@ -70,51 +69,50 @@ export default function PopupDepositIncome() {
       <div></div>
       <div class='fullscreen-popup-wrapper'>
         <div id='TransactionInput'>
-          <h3>Income Entry</h3>
+          <h3>New Deposit</h3>
           <form onSubmit={handleSubmit} autocomplete="off">
             <div class='transactionField'>
-              <label for="transactionName">Name for deposit</label>
+              <label for="transactionName">Name / Tag:</label>
               <input
                 id="transactionName"
                 type="text"
                 ref={transactionNameRef}
               />
             </div>
-            <div class='transactionField amount'>
-              <label for="transactionAmount">Amount:</label>
-              <div>
-                <span>$</span>
-                <input
-                id="transactionAmount"
-                type="number"
-                placeholder="0"
-                ref={transactionAmountRef}
-                required
-                />
+            <div class='transactionFieldWrapper'>
+              <div class='transactionField'>
+                <label for="transactionAmount">Amount:</label>
+                <span>
+                  <span>$</span>
+                  <input
+                  id="transactionAmount"
+                  type="number"
+                  placeholder="0"
+                  ref={transactionAmountRef}
+                  required
+                  />
+                </span>
+              </div>
+              <div class='transactionField'>
+                <label>Amount to deposit into savings:</label>
+                <div class='savingsOption'>
+                  <input type="radio" name="savingsMethod" onClick={radioButtHandler}/>
+                  <span>
+                    <span>$</span>
+                    <input id="savingsContribution" type="number" ref={savingsContributionRef}/>
+                  </span>
+                </div>
+                <div class='savingsOption'>
+                  <input type="radio" name="savingsMethod" onClick={radioButtHandler}/>
+                  <span>
+                    <input id="savingsPercentage" type="number" ref={savingsPercentageRef}/>
+                    <span>%</span>
+                  </span>
+                </div>
               </div>
             </div>
 
-            <div class='transactionField'>
-              <label>Amount to deposit for savings:</label>
-              <div class='transactionInput' id='savingsOptions'>
-                  <div>
-                    <input type="radio" name="savingsMethod" onClick={radioButtHandler}/>
-                    <span>
-                      <input id="savingsPercentage" type="number" ref={savingsPercentageRef}/>
-                      <span>%</span>
-                    </span>
-                  </div>
-                  <div>
-                    <input type="radio" name="savingsMethod" onClick={radioButtHandler}/>
-                    <span>
-                      <span>$</span>
-                      <input id="savingsContribution" type="number" ref={savingsContributionRef}/>
-                    </span>
-                  </div>
-              </div>
-            </div>
-
-            <div class='transactionField amount'>
+            <div class='transactionField spaced'>
               <button class='popup-button' onClick={handleCancel}>Cancel</button>
               <button class='popup-button' type="submit">Add Deposit</button>
             </div>

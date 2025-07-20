@@ -3,7 +3,7 @@ import { useMainWrapperContext } from "../../contexts/MainWrapperContext";
 import { useMoney } from '../../contexts/MoneyContext';
 
 export default function MergePopup(props) {
-    const { showPopup, setShowPopup } = useMainWrapperContext();
+    const { showPopup, setShowPopup, setEditMode } = useMainWrapperContext();
     const { moneyIn, moneyOut, setMoneyIn, setMoneyOut } = useMoney();
 
     let transactions, setTransactions, blurRef
@@ -35,24 +35,25 @@ export default function MergePopup(props) {
             });
             return updatedTransactions;
         });
+        setEditMode(false);
         setShowPopup('');
     };
-
+    
     return (
-        <Show when={showPopup() === 'delete'}>
+        <div>
             <div id='background-blur-grid' ref={blurRef}></div>
             <div id='background-grid'>
                 <div></div>
                 <div class="fullscreen-popup-wrapper">
                     <div class="fullscreen-popup">
                         <p>Are you sure you want to delete these transactions?</p>
-                        <div class='transactionField amount'>
+                        <div class='transactionField spaced'>
                             <button onClick={() => setShowPopup('')}>Cancel</button>
                             <button onClick={() => deleteTransactions()}>Delete</button>
                         </div>
                     </div>
                 </div>
             </div>
-        </Show>
+        </div>
     );
 }

@@ -1,21 +1,31 @@
-import AccountDisplay from "../components/AccountDisplay";
-import AccountMenu from "../components/AccountMenu";
-import { useMoney } from "../contexts/MoneyContext";
+import {Switch, Match} from 'solid-js';
+import { useMainWrapperContext } from "../contexts/MainWrapperContext";
 
+import Summary from './Summary';
+import Income from './Income';
+import Expenses from './Expenses';
+import gobackIcon from '../assets/goback.png';
 
-export default function Home() {
-    const { allowance, savings } = useMoney();
+export default function MainHome() {
+    const { isSlideActive, setSlideActive, setEditMode, secondPage } = useMainWrapperContext();
+        const slideBack = () => {
+        setSlideActive(false);
+        setEditMode(false)
+    };
+
     return (
-        <home style="display: flex; flex-flow: column;">
-            <div id="Home-header">
-                Your account:
+        <div id='homepage' classList={{ slide: isSlideActive() }} ontouchstart="">
+            <div id='header'>
+                <img id='backButton' src={gobackIcon} onClick={slideBack}/>
             </div>
-            <AccountDisplay colorFor='savings' name="Savings" balance={savings()}/>
-            <AccountDisplay colorFor='allowance' name="Allowance" balance={allowance()}/>
-            <div id="account-menu-wrapper"> 
-                <AccountMenu type="income" />
-                <AccountMenu type="expense" />
-            </div>
-        </home>
-    );
+            <Summary />
+            <home>
+                <Switch fallback={<Income/>}>
+                <Match when={secondPage() === 'expenses'}>
+                    <Expenses/>
+                </Match>
+                </Switch>
+            </home>
+        </div>
+    )
 }

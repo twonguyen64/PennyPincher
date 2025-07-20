@@ -37,6 +37,7 @@ export default function PopupDepositSavings() {
       const newTransaction = {
         type: 'income',
         name: transactionNameRef.value,
+        amount: NaN,
         savings: savingsAmount,
         date: todaysDate,
       };
@@ -87,7 +88,7 @@ export default function PopupDepositSavings() {
               </div>
             </div>
 
-            <div class='transactionField amount'>
+            <div class='transactionField spaced'>
               <button class='popup-button' onClick={handleCancel}>Cancel</button>
               <button class='popup-button' type="submit">Add Deposit</button>
             </div>

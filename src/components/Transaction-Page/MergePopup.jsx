@@ -44,20 +44,20 @@ export default function MergePopup(props) {
     };
 
     return (
-        <Show when={showPopup() === 'merge'}>
+        <div>
             <div id='background-blur-grid' ref={blurRef}></div>
             <div id='background-grid'>
                 <div></div>
                 <div class="fullscreen-popup-wrapper">
                     <div class="fullscreen-popup">
                         <p>You can merge together all transactions up until now to save space. This action is not reversible. Would you like to continue?</p>
-                        <div class='transactionField amount'>
+                        <div class='transactionField spaced'>
                             <button onClick={() => setShowPopup('')}>Cancel</button>
                             <button onClick={() => mergeTransactions()}>Merge</button>
                         </div>
                     </div>
                 </div>
             </div>
-        </Show>
+        </div>
     );
 }

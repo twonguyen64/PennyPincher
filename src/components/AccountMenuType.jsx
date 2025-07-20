@@ -11,7 +11,8 @@ function AccountMenuType(props) {
     const goToPagePlusPopup = (popupType, page) => {
         setSlideActive(true);
         setShowPopup(popupType);
-        setSecondPage(page)
+        setSecondPage(page);
+        
     }
 
     switch(props.type) {
@@ -30,7 +31,7 @@ function AccountMenuType(props) {
                     </div>
                 </div>
             );
-        case 'expense':
+        case 'expenses':
             return (
                 <div class="account-menu-lower-wrapper">
                     <div class="account-menu-add-button" 

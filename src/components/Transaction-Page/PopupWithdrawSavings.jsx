@@ -69,7 +69,7 @@ export default function PopupWithdrawSavings() {
                 ref={transactionNameRef}
               />
             </div>
-            <div class='transactionField amount'>
+            <div class='transactionField spaced'>
               <label for="transactionAmount">Amount:</label>
               <div style={'display: flex; justify-content: flex-end; align-items: center;'}>
                 <div>$</div>
@@ -83,7 +83,7 @@ export default function PopupWithdrawSavings() {
               </div>
             </div>
 
-            <div class='transactionField amount'>
+            <div class='transactionField spaced'>
               <button class='popup-button' onClick={handleCancel}>Cancel</button>
               <button class='popup-button' type="submit">Withdraw</button>
             </div>

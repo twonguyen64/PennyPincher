@@ -7,6 +7,7 @@ export function MainWrapperProvider(props) {
   const [isSlideActive, setIsSlideActive] = createSignal(false);
   const [showPopup, setShowPopup] = createSignal('');
   const [editMode, setEditMode] = createSignal(false);
+  const [checkboxCount, setCheckboxCount] = createSignal(0);
 
   const value = {
     secondPage, setSecondPage,
@@ -14,6 +15,7 @@ export function MainWrapperProvider(props) {
     
     showPopup, setShowPopup,
     editMode, setEditMode,
+    checkboxCount, setCheckboxCount,
   };
 
   return (

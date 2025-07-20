@@ -1,15 +1,17 @@
 #TransactionInput, .fullscreen-popup {
-  width: 60%;
+  width: 70%;
   border-radius: 10px;
   background-color: lightblue;
   padding: 1rem;
   box-shadow: 0px 4px 16px black;
   font-size: 0.9rem;
 }
-#TransactionInput > h3 {
+#TransactionInput > h3,
+.fullscreen-popup > h3 {
   margin-top: 0;
   font-size: 1rem;
   text-align: center;
+  margin-bottom: 1.4rem;
 }
 #TransactionInput > form {
   display: flex;
@@ -22,7 +24,11 @@
   flex-flow: column;
   gap: 0.4rem;
 }
-.transactionField.amount {
+.transactionFieldWrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.transactionField.spaced {
   align-items: center;
   flex-flow: row;
   justify-content: space-between;
@@ -60,7 +66,13 @@ button:focus {
   gap: 10px;
   height: 2rem;
 }
-#savingsOptions input {margin: 0}
+.savingsOption {
+  margin: 0.4rem 0;
+  display: flex;
+  justify-content: space-between;
+
+}
+.savingsOption input {margin-right: 0.5rem;}
 
 .popup-button {
   min-width: 40%;
@@ -106,4 +118,33 @@ input::placeholder { text-align: right; }
 }
 .blur {
   opacity: 0.8 !important;
+}
+
+#edit-popup {
+  width: 95%;
+}
+#Editable-Transaction {
+  padding-right: 0.5rem;
+}
+#Editable-Transaction input {
+  background-color: transparent;
+  border: 0;
+  border-bottom: 1px solid grey;
+  font-family: var(--font);
+  font-size: 0.9rem;
+  text-align: right;
+  min-width: none;
+  width: 70%;
+}
+#Editable-Transaction-name {
+  width: 100% !important;
+  text-align: left !important;
+}
+#Editable-Transaction-savings {
+  color: var(--savings-color);
+}
+.depositType {
+  font-size: 0.98em;
+  padding-top: 0.5rem;
+  padding-bottom: 1.2rem;
 }

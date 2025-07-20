@@ -1,7 +1,6 @@
-import addImg from '../../assets/add.png'
 import editImg from '../../assets/edit.png';
 import closeImg from '../../assets/close-button.png';
-import { Switch, Match, For, createEffect } from 'solid-js';
+import { Switch, Match, For, createEffect, onCleanup  } from 'solid-js';
 
 import { useMoney } from '../../contexts/MoneyContext';
 import { useMainWrapperContext } from '../../contexts/MainWrapperContext'
@@ -9,26 +8,21 @@ import { useMainWrapperContext } from '../../contexts/MainWrapperContext'
 import Transaction from './Transaction';
 import MergePopup from './MergePopup';
 import DeletePopup from './DeletePopup'
+import EditPopup from './EditPopup';
 import AccountMenuType from '../AccountMenuType';
 
 export default function TransactionList(props) {
-    const { moneyIn, moneyOut, setMoneyIn, setMoneyOut } = useMoney();
+    const { moneyIn, moneyOut, } = useMoney();
 
-    const { editMode, setEditMode, setShowPopup } = useMainWrapperContext();
-    let transactions, setTransactions, popupType, popupTypeSavings;
+    const { editMode, setEditMode, showPopup, setShowPopup, checkboxCount, setCheckboxCount } = useMainWrapperContext();
+    let transactions;
     let listRef;
     switch (props.type) {
         case 'income':
             transactions = moneyIn
-            setTransactions = setMoneyIn
-            popupType = 'depositIncome'
-            popupTypeSavings = 'depositSavings'
             break;
         case 'expense':
             transactions = moneyOut
-            setTransactions = setMoneyOut
-            popupType = 'withdrawExpense'
-            popupTypeSavings = 'withdrawSavings'
             break;
     }
 
@@ -39,10 +33,36 @@ export default function TransactionList(props) {
         }
     });
 
+    const countCheckboxes = (event) => {
+        if (event.target.type === 'checkbox') {
+            const checkedBoxes = listRef.querySelectorAll('input[type="checkbox"]:checked');
+            let count = checkedBoxes.length || 0;
+            setCheckboxCount(count);
+        }
+    };
+
+    createEffect(() => {
+        if (editMode() && listRef) 
+            listRef.addEventListener('click', countCheckboxes);
+        onCleanup(() => {
+            if (listRef) {
+                listRef.removeEventListener('click', countCheckboxes);
+                if (!editMode()) setCheckboxCount(0);
+            }
+        });
+    });
+
     return (
         <div id="TransactionList">
-            <MergePopup type={props.type}/>
-            <DeletePopup type={props.type}/>
+            <Show when={showPopup() === 'merge'}>
+                <MergePopup type={props.type}/>
+            </Show>
+            <Show when={showPopup() === 'delete'}>
+                <DeletePopup type={props.type}/>
+            </Show>
+             <Show when={showPopup() === 'edit'}>
+                <EditPopup type={props.type}/>
+            </Show>
             <Switch fallback={
                 <div id="TransactionList-upper-wrapper">
                     <span style={'font-weight: bold;'}>Transaction History</span>
@@ -54,8 +74,15 @@ export default function TransactionList(props) {
                 }>
             <Match when={editMode()}>
                 <div id="TransactionList-upper-wrapper" class="edit">
-                    <div onClick={() => setShowPopup('merge')}>Merge transactions</div>
-                    <div onClick={() => setShowPopup('delete')}>Delete selected</div>
+                    <Show when={checkboxCount() === 1}>
+                        <div onClick={() => setShowPopup('edit')} style={'width: 8rem'}>Edit transaction</div>
+                    </Show>
+                    <Show when={checkboxCount() > 1}>
+                        <div onClick={() => setShowPopup('merge')} style={'width: 8rem'}>Merge transactions</div>
+                    </Show>
+                     <Show when={checkboxCount() > 0}>
+                        <div onClick={() => setShowPopup('delete')}>Delete selected</div>
+                    </Show>
                     <img src={closeImg} alt="X" onClick={() => setEditMode(false)}/>
                 </div>
             </Match>

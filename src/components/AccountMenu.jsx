@@ -11,12 +11,12 @@ function AccountMenu(props) {
         setSecondPage(page)
         setSlideActive(true);
     };
-    let heading
+    let heading, page
     switch (props.type) {
         case 'income':
             heading = 'Money going in'
             break;
-        case 'expenses':
+        case 'expense':
             heading = 'Money going out';
             break;
     }

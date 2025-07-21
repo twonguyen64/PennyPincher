@@ -6,7 +6,7 @@ import { useMoney } from "../contexts/MoneyContext";
 export default function Summary() {
     const { allowance, savings } = useMoney();
     return (
-        <home style="display: flex; flex-flow: column;">
+        <>
             <div id="Home-header">
                 Your account:
             </div>
@@ -14,8 +14,8 @@ export default function Summary() {
             <AccountDisplay colorFor='allowance' name="Allowance" balance={allowance()}/>
             <div id="account-menu-wrapper"> 
                 <AccountMenu type="income" />
-                <AccountMenu type="expenses" />
+                <AccountMenu type="expense" />
             </div>
-        </home>
+        </>
     );
 }

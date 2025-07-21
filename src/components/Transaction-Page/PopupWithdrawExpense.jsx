@@ -39,7 +39,6 @@ export default function PopupWithdrawExpense() {
     }
     if (!isNaN(withdrawlAmount) && withdrawlAmount > 0) {
       const newTransaction = {
-        type: 'expense',
         name: transactionNameRef.value,
         amount: withdrawlAmount,
         savings: savingsAmount,
@@ -62,11 +61,11 @@ export default function PopupWithdrawExpense() {
       <div></div>
       <div class='fullscreen-popup-wrapper'>
         <div id='TransactionInput'>
-          <h3>Expense Entry</h3>
+          <h3>New Expense</h3>
           <form onSubmit={handleSubmit} autocomplete="off">
             <AccountDisplay colorFor="allowance" name="Allowance" balance={allowance()}/>
             <div class='transactionField'>
-              <label for="transactionName">Name for expense</label>
+              <label for="transactionName">Name / tag</label>
               <input
                 id="transactionName"
                 type="text"
@@ -74,7 +73,7 @@ export default function PopupWithdrawExpense() {
               />
             </div>
             <div class='transactionField spaced'>
-              <label for="transactionAmount">Amount to withdrawl</label>
+              <label for="transactionAmount">Amount:</label>
               <div style={'display: flex; justify-content: flex-end; align-items: center;'}>
                 <div>$</div>
                 <input

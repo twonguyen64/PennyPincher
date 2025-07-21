@@ -36,8 +36,8 @@ export default function PopupWithdrawSavings() {
     }
     if (!isNaN(withdrawlAmount) && withdrawlAmount > 0) {
       const newTransaction = {
-        type: 'expense',
         name: transactionNameRef.value,
+        amount: NaN,
         savings: withdrawlAmount,
         date: todaysDate,
       };

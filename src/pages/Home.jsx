@@ -18,10 +18,12 @@ export default function MainHome() {
             <div id='header'>
                 <img id='backButton' src={gobackIcon} onClick={slideBack}/>
             </div>
-            <Summary />
+            <home>
+                <Summary />
+            </home>
             <home>
                 <Switch fallback={<Income/>}>
-                <Match when={secondPage() === 'expenses'}>
+                <Match when={secondPage() === 'expense'}>
                     <Expenses/>
                 </Match>
                 </Switch>

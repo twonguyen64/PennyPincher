@@ -46,7 +46,6 @@ export default function PopupDepositIncome() {
 
     if (!isNaN(depositValue) && depositValue > 0) {
       const newTransaction = {
-        type: 'income',
         name: transactionNameRef.value,
         amount: depositValue,
         savings: savingsAmount,

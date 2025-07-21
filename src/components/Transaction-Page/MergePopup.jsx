@@ -26,6 +26,7 @@ export default function MergePopup(props) {
     });
 
     const mergeTransactions = () => {
+        const todaysDate = new Date().toISOString().split('T')[0]
         let sumAmount = 0
         let sumSavings = 0
         for (const transaction of transactions()) {
@@ -34,10 +35,10 @@ export default function MergePopup(props) {
         }
         setTransactions([])
         const newTransaction = {
-            type: props.type,
             name: 'MERGED',
             amount: sumAmount,
             savings: sumSavings,
+            date: todaysDate
         };
         mergeEntry(newTransaction);
         setShowPopup('');

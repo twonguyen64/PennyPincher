@@ -35,7 +35,6 @@ export default function PopupDepositSavings() {
 
     if (!isNaN(savingsAmount) && savingsAmount > 0) {
       const newTransaction = {
-        type: 'income',
         name: transactionNameRef.value,
         amount: NaN,
         savings: savingsAmount,
@@ -58,14 +57,14 @@ export default function PopupDepositSavings() {
       <div></div>
       <div class='fullscreen-popup-wrapper'>
         <div id='TransactionInput'>
-          <h3>Deposit money into savings (from allowance)</h3>
+          <h3>Transfer allowance into savings</h3>
           <form onSubmit={handleSubmit} autocomplete="off">
             <div>
               <AccountDisplay colorFor='allowance' name="Allowance" balance={allowance()}/>
               <AccountDisplay colorFor='savings' name="Savings" balance={savings()}/>
             </div>
             <div class='transactionField'>
-              <label for="transactionName">Name for deposit</label>
+              <label for="transactionName">Name / tag</label>
               <input
                 id="transactionName"
                 type="text"

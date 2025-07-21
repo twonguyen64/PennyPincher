@@ -31,16 +31,16 @@ function AccountMenuType(props) {
                     </div>
                 </div>
             );
-        case 'expenses':
+        case 'expense':
             return (
                 <div class="account-menu-lower-wrapper">
                     <div class="account-menu-add-button" 
-                        onClick={() => goToPagePlusPopup('withdrawSavings', 'expenses')}>
+                        onClick={() => goToPagePlusPopup('withdrawSavings', 'expense')}>
                         <img src={withdrawIcon} alt="-"/>
                         <span>Withdraw amount from savings</span>
                     </div>
                     <div class="account-menu-add-button" 
-                        onClick={() => goToPagePlusPopup('withdrawExpense', 'expenses')}>
+                        onClick={() => goToPagePlusPopup('withdrawExpense', 'expense')}>
                         <img src={addIcon} alt="+"/>
                         <span>Add expense</span>
                     </div>    

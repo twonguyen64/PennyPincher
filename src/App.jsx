@@ -27,9 +27,9 @@ export default function App(props) {
 
 function AppContentLayout(props) {
   return (
-    <main>
+    <>
       {props.children}
       <Footer/>
-    </main>
+    </>
   );
 }

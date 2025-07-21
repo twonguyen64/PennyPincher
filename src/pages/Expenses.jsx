@@ -7,11 +7,11 @@ import { useMoney } from "../contexts/MoneyContext";
 export default function Expenses() {
     const { totalExpenses } = useMoney();
     return (
-        <div id="secondPage">
-            <AccountDisplay colorFor='expenses' name="Total Expenses" balance={totalExpenses()}/>
+        <>
+            <AccountDisplay colorFor='expense' name="Total Expenses" balance={totalExpenses()}/>
             <PopupWithdrawExpense/>
             <PopupWithdrawSavings/>
             <TransactionList type='expense'/>
-        </div>
+        </>
     );
 }

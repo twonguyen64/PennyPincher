@@ -7,12 +7,12 @@ import { useMoney } from "../contexts/MoneyContext";
 export default function Income() {
     const { totalIncome, totalSavings } = useMoney();
     return (
-        <div id="secondPage">
+        <>
             <AccountDisplay colorFor='income' name="Total Income" balance={totalIncome()}/>
             <AccountDisplay colorFor='savings' name="Total Savings Contributed" balance={totalSavings()}/>
             <PopupDepositIncome/>
             <PopupDepositSavings/>
             <TransactionList type='income'/>
-        </div>
+        </>
     );
 }

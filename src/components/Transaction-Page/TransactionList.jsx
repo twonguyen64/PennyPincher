@@ -10,6 +10,7 @@ import MergePopup from './MergePopup';
 import DeletePopup from './DeletePopup'
 import EditPopup from './EditPopup';
 import AccountMenuType from '../AccountMenuType';
+import { dateToStr } from '../../helperFunctions';
 
 export default function TransactionList(props) {
     const { moneyIn, moneyOut, } = useMoney();
@@ -91,16 +92,23 @@ export default function TransactionList(props) {
                 {transactions().length === 0 ? 
                 (<p>No transactions yet.</p>) : 
                 (<For each={transactions()}>
-                    {(transaction, index) => (
-                        <Transaction
-                            type={props.type}
-                            name={transaction.name}
-                            amount={transaction.amount} 
-                            savings={transaction.savings}
-                            date={transaction.date}
-                            index={index()}
-                        />
-                    )}
+                    {(transaction, index) => {
+                        const prev = index() > 0 ? transactions()[index() - 1] : null;
+                        const shouldShowDate = prev ? prev.date !== transaction.date : true
+                        return (
+                            <>
+                                {shouldShowDate && <div class='TransactionList-date'>{dateToStr(transaction.date)}</div>}
+                                <Transaction
+                                type={props.type}
+                                name={transaction.name}
+                                amount={transaction.amount} 
+                                savings={transaction.savings}
+                                date={transaction.date}
+                                index={index()}
+                                />
+                            </>
+                        );
+                }}
                 </For>
                 )}
 

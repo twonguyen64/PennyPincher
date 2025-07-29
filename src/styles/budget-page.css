@@ -1,0 +1,128 @@
+@import './variables.css';
+
+#budgetpage-scroller {
+    align-self: center;
+    width: 92%;
+    flex-grow: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: flex; flex-flow: column; align-items: center;
+}
+
+#budgetHeader {
+  width: 100%;
+  margin-top: 0.5rem;
+  margin-bottom: 3rem;
+  font-size: 0.9rem;
+  display: flex;
+}
+  #BudgetHeader-options-wrapper {
+    flex-basis: 80%;
+    margin: auto;
+    display: flex; justify-content: space-around;
+  }
+    .BudgetHeader-options {
+      text-wrap: nowrap;
+      padding: 0.3rem;
+      border: 1px solid black;
+    }
+
+#BudgetList {
+  position: relative;
+  width: 100%;
+  display: flex; flex-flow: column; gap: 2rem;
+}
+.BudgetList-grid {
+  display: grid; gap: 0.4rem;
+  grid-template-columns: var(--budgetlist-grid-layout);
+  align-items: baseline;
+}
+  .BudgetList-grid > *:last-child {
+    text-align: right;
+    padding-right: 0.5rem;
+  }
+.BudgetList-TagGroup-summary {
+  padding-bottom: 0.3rem;
+  border-bottom: 2px solid black;
+}
+  .BudgetList-TagGroup-tag {
+  font-weight: bold;
+  font-size: 0.95rem;
+  }
+  .BudgetList-TagGroup-cost-str {
+    font-size: 0.88rem;
+    text-align: right;
+  } 
+  .BudgetList-TagGroup-cost-total {
+    font-size: 0.9rem;
+    font-weight: bold;
+  } 
+
+.BudgetExpense {
+  background-color: var(--budget-expense-color);
+  margin-bottom: 0.2rem;
+  font-size: 0.9rem;
+}
+.BudgetExpense > * {
+  padding: 0.8rem 0;
+  pointer-events: none; /*For custom checkbox functionality*/
+}
+  .BudgetExpense .editModeCheckbox {
+    width: 0.9rem; height: 0.9rem;
+  }
+  .BudgetExpense-name-wrapper {
+    display: flex;
+    margin-left: 0.5rem;
+    gap: 0.5rem;
+  }
+  .BudgetExpense-rate {
+    display: grid;
+    grid-template-columns: 3.5rem 4.5rem 1fr;
+    align-items: baseline;
+    gap: 0.3rem;
+  }
+    .BudgetExpense-rate-cost {
+      text-align: right;
+    }
+    .BudgetExpense-rate-freq {
+      font-size: 0.8rem;
+    }
+
+#budgetpage-footer {
+  height: 4.5rem;
+  padding: 0 1rem;
+  display: flex; gap: 2rem;
+  border-top: dashed 2px black;
+}
+#budgetpage-totalexpenses-wrapper {
+  margin-left: auto;
+  font-size: 0.9rem;
+  width: 12rem;
+  display: flex; flex-flow: column;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 0.5rem;
+}
+#budgetpage-totalexpenses {
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+#BudgetListEdit {
+  margin: auto 0;
+  display: flex; align-items: center;
+  gap: 0.6rem;
+  height: 2.5rem;
+}
+.BudgetListEdit-button {
+  font-size: 0.88rem;
+  height: 100%;
+  display: flex; align-items: center;
+  text-align: center;
+  padding: 0 0.3rem;
+  border: 1px solid black;
+  border-radius: 4px;
+}
+#BudgetListEdit > .close-button {
+  height: 1.4rem;
+}

@@ -1,0 +1,64 @@
+#Goals-scroller {
+    background-color: var(--savings-color-light);
+    height: 14rem;
+    display: flex; align-items: center;
+    overflow-x: scroll;
+    scroll-snap-type: x mandatory;
+    gap: var(--goal-scroller-gap);
+}
+#Goals-scroller > * {
+    flex: none;
+    height: var(--goal-height);
+    width: var(--goal-width);
+    scroll-snap-align: center; 
+}
+.Goal-buffer {
+    width: calc(50% - (var(--goal-width)/2) - var(--goal-scroller-gap)) !important;
+}
+
+#Goals-scroller .AddButton {
+    justify-content: center;
+}
+
+
+
+.Goal {
+    border-radius: 0.5rem;
+    box-shadow: 2px 2px 1px 3px black;
+    background-color: aliceblue;
+    display: flex; flex-flow: column; gap: 0.5rem;
+    padding: 0.5rem;
+}
+
+.Goal-name {
+    font-weight: bold;
+}
+.Goal-lower-wrapper {
+    display: flex; flex-flow: column; gap: 0.5rem;
+    margin-top: auto;
+    width: 90%;
+    align-self: center;
+}
+    .Goal-money {
+        display: flex; align-items: baseline;
+        gap: 1rem;
+    }
+        .Goal-balance {
+            opacity: 0.8;
+        }
+        .Goal-target {
+            margin-left: auto;
+            font-size: 1.4rem;
+        }
+
+    .Goal-progressbar {
+        border: 1px solid black;
+        height: 0.4rem;
+        margin-bottom: 1rem;
+    }
+    .Goal-progressbar-inner {
+        background-color: var(--savings-color-dark);
+        height: 100%;
+        width: 0%;
+        /*Width to be changed dynamically*/
+    }

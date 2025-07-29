@@ -1,0 +1,32 @@
+:root{
+  --footer-height: 3.2rem;
+  --font: 'Varela Round';
+  --transaction-grid-layout: 1.7fr 1.1fr 1.2fr;
+  --budgetlist-grid-layout: 4.2fr 4.2fr 1.5fr;
+  font-size: 15px;
+
+  --tag-lineheight: 0.8rem;
+  --tag-padding: 0.25rem;
+  --tag-padding-tagchooser: 0.4rem;
+
+  --goal-height: 8rem;
+  --goal-width: 12rem;
+  --goal-scroller-gap: 3rem;
+
+  /*Colors*/
+  --allowance-color-light: rgb(191, 224, 235);
+  --allowance-color: rgb(149, 195, 216);
+
+  --transaction-color: hsl(161, 36%, 81%);
+  --budget-expense-color: rgb(201, 218, 233);
+
+  --savings-color-light: hsl(147, 53%, 83%);
+  --savings-color-mid: hsl(130, 54%, 69%);
+  --savings-color-dark: rgb(5, 143, 5);
+
+    --footer-color: var(--allowance-color-light);
+    --popup-color: var(--allowance-color-light);
+    --checkbox-accent-color: var(--savings-color-dark);
+
+  
+}

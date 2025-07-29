@@ -1,12 +1,12 @@
 import { useMainWrapperContext } from "../../contexts/MainWrapperContext";
 
-export default function TransactionCheckbox(props) {
+export default function EditModeCheckbox() {
     const { editMode } = useMainWrapperContext()
     return (
         <Show when={editMode()}>
             <input 
+                class="editModeCheckbox"
                 type="checkbox" 
-                index={props.index} 
                 style={'display: inline'}
             />
         </Show>

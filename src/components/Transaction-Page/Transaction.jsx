@@ -1,55 +1,31 @@
-import TransactionCheckbox from './TransactionCheckbox'
-
+import EditModeCheckbox from './Checkbox'
 export default function Transaction(props) {
-    let sign;
-    switch(props.type) {
-        case 'income':
-            sign = ''
-            break;
-        case 'expense':
-            sign = '–'
-            break;
-    }
-
-    if (props.savings == 0 || isNaN(props.savings)) {
-        return (
-            <div class='Transaction'>
-                <span class='Transaction-name'>
-                    <TransactionCheckbox index={props.index}/>
+    return (
+        <div class={`Transaction ObjectContainer ${props.type}`} objectID={props.objectID}>
+            <span class='Transaction-name-tag-wrapper'>
+                <EditModeCheckbox/>
+                <span class='Transaction-name-tag'>
                     <span>{props.name}</span>
+                    {(props.tag && props.tag !== 'PAYCHEQUE') && 
+                        <span class='tag'>{props.tag}</span>
+                    }
                 </span>
-                <span class='Transaction-amount'>
-                    <span>{sign} ${props.amount}</span>
-                </span>
-                <span class='Transaction-savings'></span>
-            </div>
-        );
-    }
-    else if (props.amount == 0 || isNaN(props.amount)) {
-        return (
-            <div class='Transaction'>
-                <span class='Transaction-name'>
-                    <TransactionCheckbox index={props.index}/>
-                    <span>{props.name}</span>
-                </span>
-                <span class='Transaction-amount'></span>
-                <span class='Transaction-savings'>
-                    <span>↪</span> 
-                    <span class='Transaction-savings-value'>{sign} ${props.savings}</span>
-                </span>
-            </div>
-        );
-    }
-    else return (
-        <div class='Transaction'>
-            <span class='Transaction-name'>
-                <TransactionCheckbox index={props.index}/>
-                <span>{props.name}</span>
             </span>
-            <span class='Transaction-amount'>{sign} ${props.amount}</span>
-            <span class='Transaction-savings'> 
-                <span>↪</span> 
-                <span class='Transaction-savings-value'>{sign} ${props.savings}</span>
+            <span class='Transaction-income'>
+                {props.income && (
+                    <>
+                        <span>＋ $</span>
+                        <span>{props.income}</span>
+                    </>
+                )}
+            </span>
+            <span class='Transaction-expense'>
+                {props.expense && (
+                    <>
+                        <span>– $</span>
+                        <span>{props.expense}</span>
+                    </>
+                )}
             </span>
         </div>
     );

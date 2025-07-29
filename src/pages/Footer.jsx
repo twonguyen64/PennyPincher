@@ -1,4 +1,4 @@
-import homebuttonIcon from '../assets/home-button.png'
+import homebuttonIcon from '../assets/home-button.svg'
 import budgetsheetIcon from '../assets/budget-sheet.svg'
 import { useNavigationContext } from '../contexts/NavigationContext'
 export default function Footer() {
@@ -12,6 +12,10 @@ export default function Footer() {
             <div class='footerButton' onClick={() => routeTo('/')}>
                 <img src={homebuttonIcon}/>
                 <div>Home</div>
+            </div>
+            <div class='footerButton' onClick={() => routeTo('/savings')}>
+                <img src={budgetsheetIcon}/>
+                <div>Savings</div>
             </div>
             <div class='footerButton' onClick={() => routeTo('/budget')}>
                 <img src={budgetsheetIcon}/>

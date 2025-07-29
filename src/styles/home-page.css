@@ -1,11 +1,7 @@
-#Home-header {
-  align-self: flex-start;
-  padding-left: 2rem;
-  font-weight: bold;
-  font-size: 1.2rem;
-}
+
 
 .account-display {
+  margin: 0 auto;
   height: fit-content;
   width: 70%;
   border-radius: 10px;
@@ -38,46 +34,90 @@ form .account-balance {
 }
 
 .account-display { background-color: rgb(149, 195, 216);}
-.account-display.savings { background-color: rgb(149, 216, 166);}
-.account-display.allowance { background-color: rgb(149, 195, 216);}
+.account-display.savings { background-color: var(--savings-color-mid)}
+.account-display.allowance { background-color: var(allowance-color)}
 
-#account-menu-wrapper {
-  width: 85%;
+.main-wrapper {
+  width: 90%;
+  margin: auto;
   flex-grow: 1;
   display: flex; 
   flex-flow: column;
+  align-items: center;
+  gap: 1rem;
+}
+#summary-main-wrapper {
   justify-content: center;
-  gap: 10%;
 }
 .account-menu {
-  width: 100%;
+  width: 95%;
   height: fit-content;
-  font-size: 0.9rem;
 }
-.account-menu-upper-wrapper {
+.account-menu-header {
   display: flex;
   height: 1.6rem;
   border-bottom: 1px solid black;
 }
-.account-menu-lower-wrapper{
+.AddButton-wrapper{
+  margin: 0 auto;
+  width: 90%;
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   gap: 1.5rem;
-  padding: 5px;
+  padding: 0.5rem;
 }
-.account-menu-add-button {
+.AddButton-wrapper > .AddButton{
   width: 12rem;
+}
+.AddButton {
+  max-width: 12rem;
   padding: 10px 0;
   align-self: center;
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  font-size: 0.86rem;
+  font-size: 0.88rem;
 }
-.account-menu-add-button > img{
-  height: 1.6em;
+.AddButton > img{
+  height: 1.5rem;
+  width: 1.5rem;
   padding: 0.2rem;
-  object-fit: contain;
-  border: 2px solid black;
-  border-radius: 6px;
+  border: 0.2rem solid black;
+  border-radius: 0.38rem;
 }
+
+.transfer-wrapper {
+  width: 95%;
+  display: grid; grid-template-columns: 1fr 1fr;
+  align-items: center;
+  justify-items: center;
+}
+.transfer-button {
+  padding: 0.4rem;
+  width: 7rem;
+  box-shadow: 1px 1px 0 2px black;
+  display: flex; flex-flow:column; 
+  align-items: center; gap: 0.2rem;
+  transition: background-color 0.1s;
+  cursor: pointer;
+}
+.transfer-button:active {
+  background-color: rgb(233, 231, 231);
+  transform: translateY(0.7px);
+  box-shadow: 0.5px 0.5px 0 1.5px black;
+}
+.flip {
+  rotate: 180deg;
+}
+  .transfer-button-account { 
+    padding: 0 0.5rem;
+    pointer-events: none;
+    text-align: center;
+    max-width: 5rem;
+  }
+  .transfer-button-arrow {
+    font-size: 1.5rem;
+    line-height: 1.5rem;
+    pointer-events: none;
+    transform: rotate(-90deg);
+  }

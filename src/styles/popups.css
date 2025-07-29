@@ -1,150 +1,186 @@
-#TransactionInput, .fullscreen-popup {
-  width: 70%;
-  border-radius: 10px;
-  background-color: lightblue;
-  padding: 1rem;
-  box-shadow: 0px 4px 16px black;
-  font-size: 0.9rem;
-}
-#TransactionInput > h3,
-.fullscreen-popup > h3 {
-  margin-top: 0;
-  font-size: 1rem;
-  text-align: center;
-  margin-bottom: 1.4rem;
-}
-#TransactionInput > form {
-  display: flex;
-  flex-flow: column;
-  gap: 2rem;
+@import './variables.css';
+
+.blur {opacity: 0.8 !important;}
+
+.background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  height: 100%;
   width: 100%;
 }
-.transactionField {
-  display: flex;
-  flex-flow: column;
-  gap: 0.4rem;
-}
-.transactionFieldWrapper {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-}
-.transactionField.spaced {
-  align-items: center;
-  flex-flow: row;
-  justify-content: space-between;
-}
-.transactionField input {
-  background-color: transparent;
-  border: 0;
-  border-bottom: 1px solid grey;
-  font-family: var(--font);
-  font-size: 1rem;
-  text-align: right;
-}
-#transactionName {text-align: left;}
 
-input:focus,
-select:focus,
-textarea:focus,
-button:focus {
-    outline: none;
+.background.grid {
+  display: grid; grid-template-columns: 100vw 100vw;
 }
-#transactionAmount, #savingsContribution {
-  width: 5rem;
-  padding: 0.2rem;
-}
-
-#savingsPercentage {
-  width: 2rem;
-  text-align: center;
-}
-
-.transactionInput > div {
-  align-self: center;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  height: 2rem;
-}
-.savingsOption {
-  margin: 0.4rem 0;
-  display: flex;
-  justify-content: space-between;
-
-}
-.savingsOption input {margin-right: 0.5rem;}
-
-.popup-button {
-  min-width: 40%;
-  margin-top: 0.8rem;
-  align-self: center;
-  font-family: var(--font);
-  font-size: 0.9rem;
-}
-
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0;}
-input[type=number] {-moz-appearance: textfield;}
-input::-webkit-input-placeholder { text-align:right; }
-input::placeholder { text-align: right; }
-
-#background-blur-grid, #background-grid {
-  position: absolute;
-  top: 0;
-  left: 0;
-  display: grid;
-  grid-template-columns: 100vw 100vw;
-  height: 100vh;
-  z-index: 2;
-}
-#background-blur-grid {
-  background: linear-gradient(to bottom, #383838c0, #a895a88c) !important;
+.background-blur {
+  background: linear-gradient(to bottom, #383838c0, #a895a88c);
   transition: opacity 0.5s;
   opacity: 0;
-  z-index: 2;
 }
-#background-blur-single {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100vh;
-  width: 100vw;
-  z-index: 2;
-}
-.fullscreen-popup-wrapper {
+.popup-wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
-}
-.blur {
-  opacity: 0.8 !important;
+  height: 100%;
+  width: 100%;
 }
 
-#edit-popup {
-  width: 95%;
+.popup {
+  position: relative;
+  width: 80%;
+  padding: 1rem;
+  display: flex; flex-flow: column;
+  align-items: center;
+  gap: 1rem;
+  
+  background-color: var(--popup-color);
+  box-shadow: 0px 4px 16px black;
+  border-radius: 1rem;
+  font-size: 0.95rem;
 }
-#Editable-Transaction {
-  padding-right: 0.5rem;
-}
-#Editable-Transaction input {
+.popup.embedded {
+  width: 100%;
   background-color: transparent;
-  border: 0;
-  border-bottom: 1px solid grey;
-  font-family: var(--font);
-  font-size: 0.9rem;
-  text-align: right;
-  min-width: none;
-  width: 70%;
+  box-shadow: none;
 }
-#Editable-Transaction-name {
-  width: 100% !important;
-  text-align: left !important;
+.popup.inner{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  background-color: var(--popup-color);
+  box-shadow: none;
 }
-#Editable-Transaction-savings {
-  color: var(--savings-color);
-}
-.depositType {
-  font-size: 0.98em;
-  padding-top: 0.5rem;
+  .popup > h3 {
+    margin: 0;
+    margin-bottom: 1rem;
+  }
+  .popupfield.alignleft { align-self: flex-start; }
+  .popupfield.alignright { align-self: flex-start; }
+
+  .popupfield.centered {
+    display: flex; 
+    align-items: center;
+    gap: 2rem;
+  }
+  .popupfield.marginbottom {
+    margin-bottom: 0.8rem;
+  }
+  .popupfield.spaced {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+  }
+  .popupfield.spaced:last-child /*wrapper of buttons*/ {
+    margin-top: 1rem;
+  }
+  .popupfield.seperated {
+    padding: 0.5rem 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+  .popupfield.message {
+    margin-top: 1rem;
+  }
+  .popupfield.message > * {
+    line-height: 1.4rem;
+    margin-bottom: 1rem;
+  }
+  .popupfield input {
+    max-width: 12rem;
+  }
+  .popupfield.delete {
+    position: absolute;
+    top: 0.4rem;
+    right: 0.5rem;
+    height: 1.5rem;
+    width: 1.5rem;
+  }
+
+  .text-under-input-wrapper {
+    display: flex; flex-flow: column;
+    align-items: center;
+    gap: 0.4rem;
+  }
+    .text-under-input {
+      font-size: 0.88rem;
+    }
+
+  #addPaycheque-budgetExpenseDisplay {
+    padding: 0.7rem;
+    border: 1px solid black;
+    border-radius: 6px;
+  }
+  #addPaycheque-budgetExpenseDisplay-amount{
+    font-size: 1rem;
+    margin-left: 2rem;
+  }
+
+
+/*Tag Chooser*/
+
+.TagChooser {
+  background-color: rgb(239, 242, 243);
+  overflow-x: auto;
+  padding: 0.5rem;
   padding-bottom: 1.2rem;
+  z-index: 2;
+
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: nowrap;
 }
+.tag, 
+.TagChooser > *  {
+  width: fit-content;
+  text-wrap: nowrap;
+  padding: var(--tag-padding);
+  font-size: var(--tag-lineheight);
+  line-height: var(--tag-lineheight);
+  border: 1px solid black;
+}
+
+.TagChooser > .tag {
+  padding: var(--tag-padding-tagchooser);
+}
+
+
+.addTag {
+  display: flex; align-items: center;
+}
+  .addTag > img {
+    height: var(--tag-lineheight);
+    object-fit: contain;
+  }
+
+.TagChooser-input {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  max-height: 0;
+  overflow: hidden;
+  background-color: white;
+  transition: max-height 0.4s, padding 0.4s;
+}
+.TagChooser-input.active {
+  max-height: 4rem;
+  padding: 0.5rem;
+}
+  .TagChooser-input input {
+    flex-basis: 100%;
+    text-align: left;
+    font-size: 0.85rem;
+  }
+  .TagChooser-input button {
+    font-family: var(--font);
+    font-size: 0.8rem;
+  }

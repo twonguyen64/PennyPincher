@@ -1,0 +1,61 @@
+:root {
+    --arrow-size: 12px;
+    --arrow-thickness: 5px;
+    --arrow-travel: 12px
+}
+.arrows-wrapper-positioner {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 0;
+    transform: translateY(-12px);
+}
+.arrows-wrapper-positioner.rotateArrowWrapper {
+    rotate: 180deg;
+    transform: translateY(16px) !important;
+}
+.arrows-wrapper {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    position: absolute;
+    overflow: visible;
+    display: flex; flex-flow: column;
+    align-items: center; justify-content: center;
+}
+
+.arrow {
+    position: relative;
+    width: var(--arrow-size);
+    height: var(--arrow-size);
+    border-top: var(--arrow-thickness) solid black;
+    border-left: var(--arrow-thickness) solid black;
+    transform: rotate(45deg);
+    animation: arrow-up 1.5s infinite;
+}
+
+.arrow:nth-child(1) {
+    animation-delay: -0.2s;
+}
+.arrow:nth-child(2) {
+    animation-delay: -0.1s;
+}
+@keyframes arrow-up {
+    
+    0% {
+        opacity: 1;
+        transform: rotate(45deg)
+        translate(var(--arrow-travel), var(--arrow-travel));
+    }
+    0% {
+        opacity: 1;
+        transform: rotate(45deg)
+        translate(var(--arrow-travel), var(--arrow-travel));
+    }
+    100% {
+        opacity: 0;
+        transform: rotate(45deg)
+        translate(calc(-1*var(--arrow-travel)), calc(-1*var(--arrow-travel)));
+    }
+}

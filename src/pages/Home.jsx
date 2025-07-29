@@ -1,33 +1,55 @@
-import {Switch, Match} from 'solid-js';
 import { useMainWrapperContext } from "../contexts/MainWrapperContext";
-
+import gobackIcon from '../assets/goback.svg';
 import Summary from './Summary';
-import Income from './Income';
-import Expenses from './Expenses';
-import gobackIcon from '../assets/goback.png';
+import Transactions from './Transactions';
+import BackgroundBlur from "../components/BackgroundBlur";
+import { onMount } from "solid-js";
+import { getCenterElementOfScroller } from "../utils/util-functions";
+
 
 export default function MainHome() {
-    const { isSlideActive, setSlideActive, setEditMode, secondPage } = useMainWrapperContext();
-        const slideBack = () => {
-        setSlideActive(false);
-        setEditMode(false)
+    const {currentScrollPageID, setCurrentScrollPageID} = useMainWrapperContext();
+    let scrollerRef, firstPage;
+
+    onMount(() => {
+        if (currentScrollPageID()) {
+            document.getElementById(currentScrollPageID()).scrollIntoView({
+                behavior: 'instant', inline: 'center'
+            })
+        }
+    })
+    const slideBack = () => {
+        firstPage.scrollIntoView({
+            behavior: 'smooth', inline: 'center'
+        });
+    };
+
+    const scrollEnd = () => {
+        const currentPage = getCenterElementOfScroller(scrollerRef)
+        if (currentPage.id !== currentScrollPageID()) {
+            setCurrentScrollPageID(currentPage.id)
+            console.log(currentScrollPageID())
+        }
     };
 
     return (
-        <div id='homepage' classList={{ slide: isSlideActive() }} ontouchstart="">
-            <div id='header'>
-                <img id='backButton' src={gobackIcon} onClick={slideBack}/>
+        <>
+        <BackgroundBlur/>
+        <div 
+            id='homepage'
+            ref={scrollerRef}
+            class="page-multi" 
+            ontouchstart=""
+            onScrollEnd={scrollEnd}
+        >
+            <div class="page-single" id="homepage-1" ref={firstPage}>
+                <Summary/>
             </div>
-            <home>
-                <Summary />
-            </home>
-            <home>
-                <Switch fallback={<Income/>}>
-                <Match when={secondPage() === 'expense'}>
-                    <Expenses/>
-                </Match>
-                </Switch>
-            </home>
+            <div class="page-single" id="homepage-2">
+                <img id='backButton' src={gobackIcon} onClick={slideBack}/>
+                <Transactions/>
+            </div>
         </div>
+        </>
     )
 }

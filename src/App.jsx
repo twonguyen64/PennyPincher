@@ -6,6 +6,8 @@ import { MainWrapperProvider } from "./contexts/MainWrapperContext";
 import Footer from './pages/Footer';
 import './styles/index.css';
 import './styles/home-page.css';
+import './styles/budget-page.css'
+import './styles/savings-page.css'
 import './styles/transaction-page.css';
 import './styles/popups.css';
 

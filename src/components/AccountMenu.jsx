@@ -1,36 +1,26 @@
-import editImg from '../assets/edit-three-dots.png'
-import AccountMenuType from './AccountMenuType'
+import viewImg from '../assets/view.svg'
+import AccountMenuButtons from './AccountMenuButtons';
 
-import { useNavigationContext } from '../contexts/NavigationContext'
-import { useMainWrapperContext } from '../contexts/MainWrapperContext'
 
-function AccountMenu(props) {
-    const { setSecondPage, setSlideActive } = useMainWrapperContext();
-    
-    const goToPage = (page) => {
-        setSecondPage(page)
-        setSlideActive(true);
-    };
-    let heading, page
-    switch (props.type) {
-        case 'income':
-            heading = 'Money going in'
-            break;
-        case 'expense':
-            heading = 'Money going out';
-            break;
+export default function AccountMenu() { 
+    const scrollToPage = () => {
+        const pages = document.getElementById('homepage').children
+        pages[1].scrollIntoView({
+            behavior: 'smooth',
+            inline: 'center'
+        });
     }
+
     return (
         <div class="account-menu">
-            <div class="account-menu-upper-wrapper">
-                <span style={'font-weight: bold'}>{heading}</span>
-                <div class='edit-button' onClick={() => goToPage(props.type)}>
-                    <img src={editImg} alt=""/>
-                    View {props.name}
+            <div class="account-menu-header">
+                <span style={'font-weight: bold'}>TITLE</span>
+                <div class='edit-button' onClick={scrollToPage}>
+                    <img src={viewImg} alt=""/>
+                    View Transactions
                 </div>
             </div>
-            <AccountMenuType type={props.type}/>
+            <AccountMenuButtons/>
         </div>
     )
 }
-export default AccountMenu

@@ -4,6 +4,7 @@ import { Router, Route } from '@solidjs/router';
 import App from './App';
 import Home from './pages/Home';
 import Budget from './pages/Budget';
+import Savings from './pages/Savings'
 const root = document.getElementById('root');
 
 if (import.meta.env.DEV && !(root instanceof HTMLElement)) {
@@ -16,5 +17,6 @@ render(() => (
   <Router root={App}>
     <Route path="/" component={Home} />
     <Route path="/budget" component={Budget} />
+    <Route path="/savings" component={Savings} />
   </Router>
 ), root);

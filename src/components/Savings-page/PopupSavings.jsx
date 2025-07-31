@@ -2,7 +2,7 @@ import { onMount, createSignal, Switch, Match, Show } from 'solid-js'
 import { useMainWrapperContext } from '../../contexts/MainWrapperContext';
 import { useMoney } from '../../contexts/MoneyContext';
 import { GOALS_STORE } from '../../utils/db';
-import { getObjectFromScroller } from '../../utils/util-functions'
+import { getObjectFromScroller, getDateFiveYearsFromNow } from '../../utils/util-functions'
 import PopupInnerDelete from './PopupInnerDelete';
 
 export default function PopupSavings() {
@@ -11,7 +11,7 @@ export default function PopupSavings() {
     const [prevGoal, setPrevGoal] = createSignal(null);
     const [excessAmount, setExcessAmount] = createSignal(-1)
 
-    let nameRef, targetRef
+    let nameRef, targetRef, dateRef
     let headerString, submitButtonString;
     if (!editMode()) {
         headerString = 'Add savings goal'
@@ -22,7 +22,6 @@ export default function PopupSavings() {
     }
 
     onMount(() => {
-        console.log(editMode())
         if (editMode()) initalizeEditMode()
     });
 
@@ -49,6 +48,7 @@ export default function PopupSavings() {
     const addGoal = () => {
         const newGoal = {
             dateStart: new Date().toISOString().split('T')[0],
+            dateEnd: dateRef.value,
             name: nameRef.value,
             target: parseInt(targetRef.value),
             balance: 0
@@ -115,6 +115,19 @@ export default function PopupSavings() {
                             </span>
                         </span>
                     </div>
+                    <div class='popupfield seperated'>
+                        <span>Target Date <span style={'font-size: 0.9em'}>(optional)</span></span>
+                        <span>
+                            <input 
+                                type="date"
+                                ref={dateRef}
+                                value={new Date().toISOString().split('T')[0]}
+                                min={new Date().toISOString().split('T')[0]}
+                                max={getDateFiveYearsFromNow()}
+                            />
+                        </span>
+                    </div>
+            
                     </div>
                     <Switch fallback={
                         <div class='popupfield spaced'>

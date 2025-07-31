@@ -64,8 +64,14 @@ export default function Budget() {
     //Memos:
     const totalCostPerPeriod = createMemo(() => {
         const totalCost = calculateAmountPerPeriod(budgetExpenses(), payFreq())
+        const payFrequencyStrings = {
+            'Weekly': 7,
+            'Bi-weekly': 14,
+            'Monthly': 30
+        }
         setTimeout(() => { //Defer storing to DB right away
             setTotalBudgetCost({
+                freqInDays: payFrequencyStrings[payFrequencyStr()],
                 freqStr: payFrequencyStr(),
                 amount: totalCost
             });

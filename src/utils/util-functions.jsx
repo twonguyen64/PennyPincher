@@ -81,3 +81,63 @@ export function dateToStr(date) {
 
     return `${month} ${day}, ${year}`
 }
+
+/**
+ * Get the difference between two dates. Rounds to either days, weeks, or months.
+ * @param {String} dateString 
+ * @returns {String}
+ */
+export function dateDifferenceRounded(dateStrStart, dateStrEnd) {
+    const dateStart = new Date(dateStrStart);
+    const dateEnd = new Date(dateStrEnd);
+
+    const timeInMilliseconds = Math.abs(dateEnd.getTime() - dateStart.getTime());
+    const timeInDays = Math.ceil(timeInMilliseconds / (1000 * 60 * 60 * 24));
+    
+    if (timeInDays >= 7) {
+        const timeInWeeks = Math.floor(timeInDays / 7)
+        if (timeInWeeks >= 8) {
+            const timeInMonths = Math.floor(timeInWeeks / 4)
+            return `${timeInMonths} months`
+        } 
+        else return `${timeInWeeks} weeks`
+    }
+    else return `${timeInDays} days`
+}
+
+export function dateDifference(dateStrStart, dateStrEnd, daysPeriod) {
+    const dateStart = new Date(dateStrStart);
+    const dateEnd = new Date(dateStrEnd);
+
+    const timeInMilliseconds = Math.abs(dateEnd.getTime() - dateStart.getTime());
+    const timeInDays = Math.ceil(timeInMilliseconds / (1000 * 60 * 60 * 24));
+    
+    return Math.floor(timeInDays / daysPeriod)
+}
+
+
+export function generatePaymentPlan(goal, daysForEachPayment) {
+    const { dateStart, dateEnd, target, balance } = goal
+
+    const numberOfPayments = dateDifference(dateStart, dateEnd, daysForEachPayment)
+    const contributionNeeded = target - balance;
+    const paymentAmount = parseInt(contributionNeeded / numberOfPayments)
+    const payFrequencyStrings = {
+        7: 'Weekly', 14: 'Bi-weekly', 30: 'Monthly'
+    }
+    const newPaymentPlan = {
+        freqInDays: daysForEachPayment,
+        freqStr: payFrequencyStrings[daysForEachPayment],
+        paymentAmount: paymentAmount,
+        numberOfPayments: numberOfPayments,
+    }
+    return newPaymentPlan
+}
+
+
+export function getDateFiveYearsFromNow() {
+    const today = new Date();
+    const fiveYearsFromNow = new Date(today);
+    fiveYearsFromNow.setFullYear(today.getFullYear() + 5);
+    return fiveYearsFromNow.toISOString().split('T')[0]
+}

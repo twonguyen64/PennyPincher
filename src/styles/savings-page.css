@@ -1,8 +1,17 @@
+#Savingspage-main {
+    overflow-y: auto;
+    overflow-x: hidden;
+    touch-action: pan-y;
+}
+#Savingspage-main > * {
+    flex-shrink: 0;
+}
+
 #Goals-scroller {
     background-color: var(--savings-color-light);
     height: 14rem;
     display: flex; align-items: center;
-    overflow-x: scroll;
+    overflow-x: auto;
     scroll-snap-type: x mandatory;
     gap: var(--goal-scroller-gap);
 }
@@ -62,3 +71,57 @@
         width: 0%;
         /*Width to be changed dynamically*/
     }
+
+
+.PaymentPlan {
+    padding: 0.5rem;
+    display: flex; flex-flow: column; 
+    gap: 0.5rem;
+}
+.PaymentPlan-chain {
+    position: relative;
+    height: 3rem;
+    margin-top: 1.5rem;
+    border: 1px solid black;
+    display: flex; align-items: center;
+    overflow: hidden;
+}
+    .PaymentPlan-chain-startingBalance {
+        display: inline-block;
+        height: var(--chain-height);
+    }
+    .PaymentPlan-chain-currentBalance {
+        position: absolute;
+        display: inline-block;
+        height: var(--chain-height);
+        background-color: var(--savings-color-dark);
+    }
+    .PaymentPlan-chain-remainder {
+        height: 0.1rem;
+        flex-grow: 1;
+        background-color: rgb(94, 94, 94);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+        .PaymentPlan-chain-node-wrapper {
+            overflow: visible;
+            height: 0; width: 0;
+        }
+        
+        .PaymentPlan-chain-node {
+            height: var(--chain-node-size);
+            width: var(--chain-node-size);
+            border-radius: 50%;
+            box-sizing: border-box;
+            border: 0.5px solid black;
+            transform: translate(-50%, -50%);
+        }
+        .PaymentPlan-chain-node.paid {
+            background-color: var(--savings-color-dark);
+            border: none;
+        }
+.PaymentPlan-numberOfPayments {
+    text-align: right;
+    font-size: 0.9em;
+}

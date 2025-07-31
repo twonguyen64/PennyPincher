@@ -1,55 +1,38 @@
 import { useMainWrapperContext } from "../contexts/MainWrapperContext";
-import gobackIcon from '../assets/goback.svg';
 import Summary from './Summary';
 import Transactions from './Transactions';
 import BackgroundBlur from "../components/BackgroundBlur";
-import { onMount } from "solid-js";
-import { getCenterElementOfScroller } from "../utils/util-functions";
 
+import gobackIcon from '../assets/goback.svg';
+import { usePageColumnScrolling } from "../utils/PageColumnScrolling";
 
 export default function MainHome() {
-    const {currentScrollPageID, setCurrentScrollPageID} = useMainWrapperContext();
-    let scrollerRef, firstPage;
-
-    onMount(() => {
-        if (currentScrollPageID()) {
-            document.getElementById(currentScrollPageID()).scrollIntoView({
-                behavior: 'instant', inline: 'center'
-            })
-        }
-    })
-    const slideBack = () => {
-        firstPage.scrollIntoView({
-            behavior: 'smooth', inline: 'center'
-        });
-    };
-
-    const scrollEnd = () => {
-        const currentPage = getCenterElementOfScroller(scrollerRef)
-        if (currentPage.id !== currentScrollPageID()) {
-            setCurrentScrollPageID(currentPage.id)
-            console.log(currentScrollPageID())
-        }
-    };
+    let scrollerRef
+     
+    const { pageIndex, pageIndexSetter } = useMainWrapperContext();
+    const { slideToLeft, snapScrollEnd } = usePageColumnScrolling(
+        () => scrollerRef, () => pageIndex().home, pageIndexSetter.home
+    );
 
     return (
         <>
         <BackgroundBlur/>
         <div 
-            id='homepage'
+            id='Homepage'
             ref={scrollerRef}
-            class="page-multi" 
+            class="page-multi scroll" 
             ontouchstart=""
-            onScrollEnd={scrollEnd}
+            onScrollEnd={snapScrollEnd}
         >
-            <div class="page-single" id="homepage-1" ref={firstPage}>
+            <div class="page-single">
                 <Summary/>
             </div>
-            <div class="page-single" id="homepage-2">
-                <img id='backButton' src={gobackIcon} onClick={slideBack}/>
+            <div class="page-single">
+                <img id='backButton' src={gobackIcon} onClick={slideToLeft}/>
                 <Transactions/>
             </div>
         </div>
         </>
     )
 }
+//<div onClick={slideRight}>CLICK ME</div>

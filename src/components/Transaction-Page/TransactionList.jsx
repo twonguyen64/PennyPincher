@@ -1,23 +1,20 @@
-import editImg from '../../assets/edit.svg';
-import closeImg from '../../assets/close-button.png';
-import searchImg from '../../assets/search.svg'
 import { Switch, Match, For, createEffect, createMemo  } from 'solid-js';
-
 import { useMoney } from '../../contexts/MoneyContext';
 import { useMainWrapperContext } from '../../contexts/MainWrapperContext';
 import { dateToStr } from '../../utils/util-functions'
 
 import Transaction from './Transaction';
-import AccountMenuButtons from '../AccountMenuButtons';
 import TagChooser from '../TagChooser';
 import EditModeMenu from '../EditModeMenu';
+import AddButton from '../AddButton';
+
+import editImg from '../../assets/edit.svg';
+import searchImg from '../../assets/search.svg'
+import addIcon from '../../assets/add.svg'
 
 export default function TransactionList() {
+    const { editMode, setEditMode, setShowPopup, selectedTag } = useMainWrapperContext();
     const { transactions } = useMoney();
-    const { 
-        editMode, setEditMode, 
-        showPopup, selectedTag,
-    } = useMainWrapperContext();
     
     let listRef, searchbar, searchTrigger, searchWrapper;
 
@@ -103,7 +100,16 @@ export default function TransactionList() {
                 </For>
                 )}
 
-                <AccountMenuButtons/>
+                <div class="AddButton-wrapper">
+                    <AddButton 
+                        icon={addIcon} text={'Add paycheque'} 
+                        onClick={() => {setEditMode(false); setShowPopup('paycheque')}}
+                    />
+                    <AddButton 
+                        icon={addIcon} text={'Add expense'} 
+                        onClick={() => {setEditMode(false); setShowPopup('expense')}}
+                    /> 
+                </div>
             </div>
         </div>
     ); 

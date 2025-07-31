@@ -91,7 +91,6 @@ export default function TransferMenu(props) {
         if (startAccount.balance() - transferAmount < 0) {
             alert('SDSDSAF'); return
         }
-        console.log(startAccount, endAccount)
         startAccount.set(-1 * transferAmount)
         endAccount.set(transferAmount)
         transferRef.value = ''

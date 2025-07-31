@@ -113,10 +113,7 @@ export function deleteDataKey(db, storeName, key) {
     const store = transaction.objectStore(storeName);
     const request = store.delete(key);
 
-    request.onsuccess = () => {
-      console.log(`String with key ${key} deleted.`);
-      resolve();
-    };
+    request.onsuccess = () => resolve()
     request.onerror = () => reject('Error deleting string')
   });
 }

@@ -13,6 +13,8 @@
   --goal-width: 12rem;
   --goal-scroller-gap: 3rem;
 
+  --chain-height: 0.3rem;
+  --chain-node-size: 0.4rem;
   /*Colors*/
   --allowance-color-light: rgb(191, 224, 235);
   --allowance-color: rgb(149, 195, 216);

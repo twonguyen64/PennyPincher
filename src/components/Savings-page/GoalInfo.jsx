@@ -1,7 +1,7 @@
 import { Show } from 'solid-js'
-import { useMainWrapperContext } from "../../contexts/MainWrapperContext";
 import { useMoney } from "../../contexts/MoneyContext";
-
+import { useMainWrapperContext } from "../../contexts/MainWrapperContext";
+import { usePageColumnScrolling } from "../../utils/PageColumnScrolling"
 
 import AccountDisplay from '../AccountDisplay';
 import AnimatedArrows from '../AnimatedArrows';
@@ -11,11 +11,21 @@ import AddButton from '../AddButton';
 
 import editIcon from '../../assets/edit-borderless.svg'
 import uploadIcon from '../../assets/upload.svg'
-import { dateToStr } from '../../utils/util-functions';
+import { dateToStr, dateDifferenceRounded } from '../../utils/util-functions';
+import PaymentPlan from './PaymentPlan';
 
 export default function GoalInfo(props) {
     const { showPopup, setShowPopup, setEditMode } = useMainWrapperContext();
     const { savings } = useMoney();
+    const { isGoalVisible, currentGoal } = props
+    
+    const { pageIndex, pageIndexSetter } = useMainWrapperContext();
+    const { slideToRight } = usePageColumnScrolling(
+        () => document.getElementById('Savingspage'), 
+        () => pageIndex().savings, 
+        pageIndexSetter.savings
+    );
+
     return (
         <>
         <Show when={showPopup() === 'transfer'}>
@@ -23,7 +33,7 @@ export default function GoalInfo(props) {
         </Show>
         <AccountDisplay colorFor='savings' name="Savings" balance={savings()}/>
 
-        <Show when={showPopup() === '' && props.isGoalVisible()}>
+        <Show when={showPopup() === '' && isGoalVisible()}>
             <div class='account-menu'>
                 <div class="AddButton-wrapper">
                     <AddButton
@@ -36,14 +46,30 @@ export default function GoalInfo(props) {
                     />
                 </div>
                 <div class='Goal-date-info'>
-                    <div>Date started: {dateToStr(props.currentGoal().dateStart)}</div>
-                    <div></div>
+                    <div>{currentGoal().name}</div>
+                    <div>Date started: {dateToStr(currentGoal().dateStart)}</div>
+                    <div>{dateDifferenceRounded(currentGoal().dateStart, currentGoal().dateEnd)} to go</div>
                 </div>
+
+                <Show when={currentGoal()} keyed>
+                    <PaymentPlan goal={currentGoal()}/>
+                </Show>
+
+                <Show when={currentGoal()}>
+                    <div class="PaymentPlan-viewSummary-wrapper">
+                        <div onClick={slideToRight}>
+                            <span>IMG HERE</span>
+                            <span>View all plans</span>
+                        </div>
+                    </div>
+                </Show>
+
             </div>
-            </Show>
+        </Show>
+
         <Show when={showPopup() === 'transfer'}>
-            <Show when={props.currentGoal()} keyed>
-                <TransferMenu account='Goal' goalID={props.currentGoal().id}/>
+            <Show when={currentGoal()} keyed>
+                <TransferMenu account='Goal' goalID={currentGoal().id}/>
             </Show>
         </Show>
         </>

@@ -11,7 +11,16 @@ const KEY_SAVINGS_TYPE = 'savingsType';
 
 export function MainWrapperProvider(props) {
 
-  const [currentScrollPageID, setCurrentScrollPageID] = createSignal(null);
+  const [pageIndex, setPageIndex] = createSignal({
+    home: null, savings: null, settings: null
+  });
+  const pageIndexSetter = {
+    home: (index) => setPageIndex(prev => ({ ...prev, home: index })), 
+    savings: (index) => setPageIndex(prev => ({ ...prev, savings: index })), 
+    settings: (index) => setPageIndex(prev => ({ ...prev, settings: index }))
+  }
+
+  
   const [showPopup, setShowPopup] = createSignal('');
   const [editMode, setEditMode] = createSignal(false);
   const [checkboxCount, setCheckboxCount] = createSignal(0);
@@ -44,7 +53,9 @@ export function MainWrapperProvider(props) {
   };
 
   const value = {
-    currentScrollPageID, setCurrentScrollPageID,
+    pageIndex, 
+    pageIndexSetter,
+
     showPopup, setShowPopup,
     editMode, setEditMode,
     checkboxCount, setCheckboxCount,

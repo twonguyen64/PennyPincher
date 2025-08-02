@@ -24,7 +24,7 @@ export default function AccountMenu() {
         <div class="account-menu">
             <div class="account-menu-header">
                 <span style={'font-weight: bold'}>TITLE</span>
-                <div class='edit-button' onClick={slideToRight}>
+                <div class='borderless-button' onClick={slideToRight}>
                     <img src={viewIcon} alt=""/>
                     View Transactions
                 </div>

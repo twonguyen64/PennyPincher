@@ -51,7 +51,8 @@ export default function PopupSavings() {
             dateEnd: dateRef.value,
             name: nameRef.value,
             target: parseInt(targetRef.value),
-            balance: 0
+            balance: 0,
+            hasPaymentPlan: false
         }
         addTransaction(newGoal, GOALS_STORE)
         setShowPopup('')

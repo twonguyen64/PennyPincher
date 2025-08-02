@@ -20,7 +20,7 @@ export default function MainHome() {
         <div 
             id='Homepage'
             ref={scrollerRef}
-            class="page-multi scroll" 
+            class="page-multi swipe-scroll" 
             ontouchstart=""
             onScrollEnd={snapScrollEnd}
         >

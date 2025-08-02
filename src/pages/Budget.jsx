@@ -105,7 +105,7 @@ export default function Budget() {
                 <div id="TransactionList-upper-wrapper">
                     <span style={'font-weight: bold;'}>Budget Sheet</span>
                     <Show when={budgetExpenses().length > 0}>
-                        <div class='edit-button' onClick={() => setEditMode(true)}>
+                        <div class='borderless-button' onClick={() => setEditMode(true)}>
                             <img src={editImg} alt=""/>
                             Edit
                         </div>

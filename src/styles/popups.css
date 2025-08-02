@@ -6,7 +6,7 @@
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 2;
+  z-index: 3;
   height: 100%;
   width: 100%;
 }
@@ -166,9 +166,10 @@
   flex-wrap: wrap;
   justify-content: center;
   gap: 1rem;
+  background-color: white;
+  
   max-height: 0;
   overflow: hidden;
-  background-color: white;
   transition: max-height 0.4s, padding 0.4s;
 }
 .TagChooser-input.active {

@@ -51,7 +51,7 @@ export default function TransactionList() {
                 <div id="TransactionList-upper-wrapper">
                     <span style={'font-weight: bold;'}>Transaction History</span>
                     <Show when={transactions().length > 0}>
-                        <div class='edit-button' onClick={() => setEditMode(true)}>
+                        <div class='borderless-button' onClick={() => setEditMode(true)}>
                             <img src={editImg} alt=""/>
                             Edit
                         </div>

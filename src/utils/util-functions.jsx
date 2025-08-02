@@ -108,26 +108,22 @@ export function dateDifferenceRounded(dateStrStart, dateStrEnd) {
 export function dateDifference(dateStrStart, dateStrEnd, daysPeriod) {
     const dateStart = new Date(dateStrStart);
     const dateEnd = new Date(dateStrEnd);
-
     const timeInMilliseconds = Math.abs(dateEnd.getTime() - dateStart.getTime());
     const timeInDays = Math.ceil(timeInMilliseconds / (1000 * 60 * 60 * 24));
-    
+
     return Math.floor(timeInDays / daysPeriod)
 }
 
 
-export function generatePaymentPlan(goal, daysForEachPayment) {
+export function generatePaymentPlan(goal, totalBudgetCost) {
     const { dateStart, dateEnd, target, balance } = goal
-
-    const numberOfPayments = dateDifference(dateStart, dateEnd, daysForEachPayment)
+    const numberOfPayments = dateDifference(dateStart, dateEnd, totalBudgetCost.freqInDays)
     const contributionNeeded = target - balance;
     const paymentAmount = parseInt(contributionNeeded / numberOfPayments)
-    const payFrequencyStrings = {
-        7: 'Weekly', 14: 'Bi-weekly', 30: 'Monthly'
-    }
+
     const newPaymentPlan = {
-        freqInDays: daysForEachPayment,
-        freqStr: payFrequencyStrings[daysForEachPayment],
+        freqInDays: totalBudgetCost.freqInDays,
+        freqStr: totalBudgetCost.freqStr,
         paymentAmount: paymentAmount,
         numberOfPayments: numberOfPayments,
     }

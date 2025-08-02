@@ -1,7 +1,6 @@
-import { Show } from 'solid-js'
+import { createEffect, Show } from 'solid-js'
 import { useMoney } from "../../contexts/MoneyContext";
 import { useMainWrapperContext } from "../../contexts/MainWrapperContext";
-import { usePageColumnScrolling } from "../../utils/PageColumnScrolling"
 
 import AccountDisplay from '../AccountDisplay';
 import AnimatedArrows from '../AnimatedArrows';
@@ -12,19 +11,12 @@ import AddButton from '../AddButton';
 import editIcon from '../../assets/edit-borderless.svg'
 import uploadIcon from '../../assets/upload.svg'
 import { dateToStr, dateDifferenceRounded } from '../../utils/util-functions';
-import PaymentPlan from './PaymentPlan';
+import PaymentPlanWrapper from './PaymentPlanWrapper';
 
 export default function GoalInfo(props) {
+    const { isGoalVisible, currentGoal } = props
     const { showPopup, setShowPopup, setEditMode } = useMainWrapperContext();
     const { savings } = useMoney();
-    const { isGoalVisible, currentGoal } = props
-    
-    const { pageIndex, pageIndexSetter } = useMainWrapperContext();
-    const { slideToRight } = usePageColumnScrolling(
-        () => document.getElementById('Savingspage'), 
-        () => pageIndex().savings, 
-        pageIndexSetter.savings
-    );
 
     return (
         <>
@@ -33,8 +25,8 @@ export default function GoalInfo(props) {
         </Show>
         <AccountDisplay colorFor='savings' name="Savings" balance={savings()}/>
 
-        <Show when={showPopup() === '' && isGoalVisible()}>
-            <div class='account-menu'>
+        <Show when={showPopup() !== 'transfer' && isGoalVisible()}>
+            <div id='GoalInfo'>
                 <div class="AddButton-wrapper">
                     <AddButton
                         icon={editIcon} text={'Edit goal'} 
@@ -50,19 +42,7 @@ export default function GoalInfo(props) {
                     <div>Date started: {dateToStr(currentGoal().dateStart)}</div>
                     <div>{dateDifferenceRounded(currentGoal().dateStart, currentGoal().dateEnd)} to go</div>
                 </div>
-
-                <Show when={currentGoal()} keyed>
-                    <PaymentPlan goal={currentGoal()}/>
-                </Show>
-
-                <Show when={currentGoal()}>
-                    <div class="PaymentPlan-viewSummary-wrapper">
-                        <div onClick={slideToRight}>
-                            <span>IMG HERE</span>
-                            <span>View all plans</span>
-                        </div>
-                    </div>
-                </Show>
+                    <PaymentPlanWrapper currentGoal={currentGoal}/>
 
             </div>
         </Show>

@@ -9,7 +9,7 @@ import addIcon from '../assets/add.svg'
 import BackgroundBlur from '../components/BackgroundBlur';
 import AddButton from '../components/AddButton';
 import GoalInfo from '../components/Savings-page/GoalInfo';
-import PaymentPlanSummary from '../components/Savings-page/PaymentPlanSummary';
+import PaymentPlanTimeline from '../components/Savings-page/PaymentPlanTimeline';
 
 export default function Savings() {
     const { showPopup, setShowPopup } = useMainWrapperContext();
@@ -57,12 +57,14 @@ export default function Savings() {
                 middleElement = addGoalRef.previousElementSibling
                 middleElement.scrollIntoView({behavior: 'smooth',inline: 'center'});
             } 
-            else setIsGoalVisible(false)
+            else {
+                setIsGoalVisible(false)
+            }
         }
         //Otherwise, middle element is a goal.
         else {
             const objectID = parseInt(middleElement.getAttribute('objectid'))
-            if (objectID == currentGoal().id) return
+            if (objectID == currentGoal().id && isGoalVisible()) return
             //Save current goal object to signal if scrolled to a new goal
             const goal = getObjectFromElement(middleElement, goals())
             updateCurrentGoal(goal)
@@ -100,23 +102,15 @@ export default function Savings() {
                 />
                 <div class="Goal-buffer"></div>
             </div>
-            <div id='Goals-account-wrapper' class='main-wrapper'>
+            <div id='Goals-account-wrapper'>
                 <GoalInfo 
                 currentGoal={currentGoal}
                 isGoalVisible={isGoalVisible}
                 />
-                <div>1</div>
-                <div>1</div>
-                <div>1</div>
-                <div>1</div>
-                <div>1</div>
-                <div>1</div>
-                <div>1</div>
-                <div>1</div>
             </div>
         </div>
         <div class='page-single'>
-            <PaymentPlanSummary/>
+            <PaymentPlanTimeline/>
         </div>
         </div>
     );

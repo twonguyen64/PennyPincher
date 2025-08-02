@@ -18,16 +18,19 @@
   align-items: flex-end;
   border-bottom: 2px solid black;
 }
-.edit-button {
+.borderless-button {
   margin-left: auto;
   display: flex;
   align-items: center;
   gap: 5px;
   font-size: 0.9rem;
 }
-  .edit-button > img {
+  .borderless-button > img {
     height: 1.1rem;
     object-fit: contain;
+  }
+  .borderless-button > * {
+    display: inline-block;
   }
 .close-button {
   border: 0 !important;

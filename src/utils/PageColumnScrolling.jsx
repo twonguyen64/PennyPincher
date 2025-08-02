@@ -1,7 +1,11 @@
 import { onMount, onCleanup, createSignal } from 'solid-js';
 import { getCenterElementOfScroller } from './util-functions';
 
-const ANIMATION_DURATION = 700;
+/**Class name to apply to the elements that allow manual scrolling */
+const SWIPE_SCROLL_CLASS = 'swipe-scroll'
+const NO_TOUCH_EVENTS_CLASS = 'no-touch-events'
+const ANIMATION_DURATION = 500;
+
 const EASING_FUNCTION = (t) => {return (t - 1) * (t - 1) * (t - 1) + 1} //Ease-out
 
 export function usePageColumnScrolling(scrollerRef, pageIndex, setPageIndex) {
@@ -16,10 +20,17 @@ export function usePageColumnScrolling(scrollerRef, pageIndex, setPageIndex) {
     };
 
     const animateScroll = (startScroll, endScroll, duration) => {
-        scrollerRef().classList.add('no-touch-action')
+         //Initialize
+        const scroller = scrollerRef()
         stopAnimation();
-        let startTime = 0
 
+        //Handle scroll containers that allow user to also scroll by swiping
+        const scrollerAllowsSwipeScroll = (scroller.classList.contains(SWIPE_SCROLL_CLASS))
+        if (scrollerAllowsSwipeScroll) 
+            scroller.classList.remove(SWIPE_SCROLL_CLASS)
+            scroller.classList.add(NO_TOUCH_EVENTS_CLASS)
+
+        let startTime = 0
         const animate = (currentTime) => {
             if (startTime === 0) {
                 startTime = currentTime;
@@ -27,8 +38,9 @@ export function usePageColumnScrolling(scrollerRef, pageIndex, setPageIndex) {
             const elapsed = currentTime - startTime;
             const progress = Math.min(elapsed / duration, 1); // Clamp progress between 0 and 1
             const easedProgress = EASING_FUNCTION(progress);
-            if (scrollerRef()) { // Ensure scrollerRef() is available
-                scrollerRef().scrollLeft = startScroll + (endScroll - startScroll) * easedProgress;
+            if (scroller) { // Ensure scrollerRef() is available
+                scroller.scrollLeft = startScroll + (endScroll - startScroll) * easedProgress;
+
             }
             if (progress < 1) {
                 //Recursive call down until end of animation
@@ -36,7 +48,9 @@ export function usePageColumnScrolling(scrollerRef, pageIndex, setPageIndex) {
             } else {
                 // End of animation
                 animationFrameId = null;
-                scrollerRef().classList.remove('no-touch-action')
+                if (scrollerAllowsSwipeScroll) 
+                    scroller.classList.add(SWIPE_SCROLL_CLASS)
+                    scroller.classList.remove(NO_TOUCH_EVENTS_CLASS)
             }
         };
         animationFrameId = requestAnimationFrame(animate);

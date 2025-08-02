@@ -1,12 +1,24 @@
 import { createMemo } from "solid-js"
 import { useMoney } from "../../contexts/MoneyContext"
+import { useMainWrapperContext } from "../../contexts/MainWrapperContext";
+import { usePageColumnScrolling } from "../../utils/PageColumnScrolling"
+
 import { generatePaymentPlan } from "../../utils/util-functions";
 
-export default function PaymentPlan(props) {
-    const { totalBudgetCost } = useMoney();
+import paymentPlanIcon from '../../assets/payment-plan.svg'
 
+export default function PaymentPlan(props) {
+
+    const { pageIndex, pageIndexSetter } = useMainWrapperContext();
+    const { slideToRight } = usePageColumnScrolling(
+        () => document.getElementById('Savingspage'), 
+        () => pageIndex().savings, 
+        pageIndexSetter.savings
+    );
+    const { totalBudgetCost } = useMoney();
+    
     const plan = createMemo(() => {
-        const plan = generatePaymentPlan(props.goal, totalBudgetCost().freqInDays)
+        const plan = generatePaymentPlan(props.goal, totalBudgetCost())
         return plan
     });
     const percentage = (props.goal.balance / props.goal.target) * 100
@@ -17,8 +29,18 @@ export default function PaymentPlan(props) {
     ));
 
     return (
+        <>
+        <div class="PaymentPlan-viewSummary-wrapper">
+            <div class='borderless-button' onClick={slideToRight}>
+                <img src={paymentPlanIcon}/>
+                View timeline ▶
+            </div>
+        </div>
         <div class="PaymentPlan">
-            <div class="PaymentPlan-payment">{plan().freqStr} installments of ${plan().paymentAmount}</div>
+            <div class="PaymentPlan-payment">
+                <span>{plan().freqStr} installments of</span>
+                <span class="PaymentPlan-payment-value">${plan().paymentAmount}</span>
+                </div>
             <div class="PaymentPlan-chain">
                 <span 
                     class="PaymentPlan-chain-startingBalance" 
@@ -39,5 +61,6 @@ export default function PaymentPlan(props) {
                 {plan().numberOfPayments} payments left
             </div>
         </div>
+        </>
     )
 }

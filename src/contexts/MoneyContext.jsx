@@ -130,6 +130,7 @@ export function MoneyProvider(props) {
             const addedTransaction = await addData(db, store, transaction);
             //Adds object to array (the solid-js signal) using corresponding Setter.
             setter(prev => [...prev, addedTransaction]);
+            return addedTransaction;
         } 
         catch (error) {console.error("Failed to add transaction:", error)}
     };

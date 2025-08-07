@@ -163,11 +163,10 @@ export default function Budget() {
             />
             </div>
             
-            <div id='budgetpage-footer'>
-                
-                <span id='budgetpage-totalexpenses-wrapper'>
+            <div class='Total-footer'>
+                <span class='Total-footer-value-wrapper'>
                     <div>Total {payFrequencyStr().toLowerCase()} expenses: </div>
-                    <div id='budgetpage-totalexpenses'>${totalCostPerPeriod()}</div>
+                    <div class='Total-footer-value'>${totalCostPerPeriod()}</div>
                 </span>
             </div>
         </div>

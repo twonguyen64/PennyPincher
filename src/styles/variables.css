@@ -9,13 +9,25 @@
   --tag-padding: 0.25rem;
   --tag-padding-tagchooser: 0.4rem;
 
-  --goal-height: 8rem;
-  --goal-width: 12rem;
+  --goal-height: 9em;
+  --goal-width: 12em;
   --goal-scroller-gap: 3rem;
+
+  --goal-sort-spacer-size: 3rem;
 
   --toggle-switch-height: 1.4rem;
   --chain-height: 0.3rem;
   --chain-node-size: 0.4rem;
+
+  --timeline-date-row-height: 3rem;
+  --timeline-goal-width: 7rem;
+  --timeline-columns: 0;
+  --timeline-column-width: 4.5rem;
+  --timeline-row-height: 6rem;
+
+  --timeline-column-gap: 4px;
+  --timeline-row-gap: 0.5rem;
+  --timeline-first-date-column-width: 0;
   /*Colors*/
   --allowance-color-light: rgb(191, 224, 235);
   --allowance-color: rgb(149, 195, 216);

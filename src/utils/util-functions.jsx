@@ -1,3 +1,5 @@
+import { PaymentPlan } from './Classes'
+
 export function getObjectFromCheckbox(objectArray) {
     const checkbox = document.querySelector('.editModeCheckbox:checked')
     const objectContainer = checkbox.closest('.ObjectContainer')
@@ -46,13 +48,26 @@ export function getObjectFromElement(objectElement, signalArray) {
 /**
  * @param {HTMLElement} scroller
  * @param {AccessorArray} signalArray 
- * @returns {Object}
+ * @returns {Object | null}
  */
 export function getObjectFromScroller(scroller, signalArray) {
     const objectElement = getCenterElementOfScroller(scroller)
     if (!objectElement) return null
     const object = getObjectFromElement(objectElement, signalArray)
     return object
+}
+
+/**
+ * @param {HTMLElement} scroller 
+ * @param {number} objectID 
+ * @returns {HTMLElement | null}
+ */
+export function getElementFromObjectID(scroller, objectID) {
+    for (const objectElement of scroller.children) {
+        if (objectElement.getAttribute('objectid') === objectID.toString())
+            return objectElement
+    }
+    return null
 }
 
 
@@ -80,6 +95,16 @@ export function dateToStr(date) {
     }
 
     return `${month} ${day}, ${year}`
+}
+
+/**
+ * @param {number} monthIndex 
+ * @returns 
+ */
+export function getShortMonthString(monthIndex) {
+  const date = new Date(0, monthIndex);
+  const options = { month: 'short' };
+  return new Intl.DateTimeFormat('en-US', options).format(date);
 }
 
 /**
@@ -121,13 +146,12 @@ export function generatePaymentPlan(goal, totalBudgetCost) {
     const contributionNeeded = target - balance;
     const paymentAmount = parseInt(contributionNeeded / numberOfPayments)
 
-    const newPaymentPlan = {
-        freqInDays: totalBudgetCost.freqInDays,
-        freqStr: totalBudgetCost.freqStr,
-        paymentAmount: paymentAmount,
-        numberOfPayments: numberOfPayments,
-    }
-    return newPaymentPlan
+    return new PaymentPlan(
+        totalBudgetCost.freqInDays,
+        totalBudgetCost.freqStr,
+        paymentAmount,
+        numberOfPayments
+    )
 }
 
 
@@ -137,3 +161,4 @@ export function getDateFiveYearsFromNow() {
     fiveYearsFromNow.setFullYear(today.getFullYear() + 5);
     return fiveYearsFromNow.toISOString().split('T')[0]
 }
+

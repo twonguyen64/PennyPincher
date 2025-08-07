@@ -2,8 +2,7 @@ import { onMount, createSignal, Switch, Match, Show } from 'solid-js'
 import { useMainWrapperContext } from '../../contexts/MainWrapperContext';
 import { useMoney } from '../../contexts/MoneyContext';
 import { GOALS_STORE } from '../../utils/db';
-import { getObjectFromScroller, getDateFiveYearsFromNow } from '../../utils/util-functions'
-import PopupInnerDelete from './PopupInnerDelete';
+import { getObjectFromScroller, getDateFiveYearsFromNow, getElementFromObjectID } from '../../utils/util-functions'
 
 export default function PopupSavings() {
     const { editMode, setEditMode, setShowPopup } = useMainWrapperContext();
@@ -45,7 +44,7 @@ export default function PopupSavings() {
         else editGoalPart1()
     }
 
-    const addGoal = () => {
+    const addGoal = async () => {
         const newGoal = {
             dateStart: new Date().toISOString().split('T')[0],
             dateEnd: dateRef.value,
@@ -54,7 +53,12 @@ export default function PopupSavings() {
             balance: 0,
             hasPaymentPlan: false
         }
-        addTransaction(newGoal, GOALS_STORE)
+        const addedGoal = await addTransaction(newGoal, GOALS_STORE)
+        const scrollRef = document.getElementById('Goals-scroller')
+        const newGoalElement = getElementFromObjectID(scrollRef, addedGoal.id)
+        if (newGoalElement) {
+            newGoalElement.scrollIntoView({behavior: 'instant',inline: 'center'});
+        }
         setShowPopup('')
     }
 

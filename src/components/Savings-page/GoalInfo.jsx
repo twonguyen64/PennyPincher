@@ -1,9 +1,7 @@
-import { createEffect, Show } from 'solid-js'
+import { Show } from 'solid-js'
 import { useMoney } from "../../contexts/MoneyContext";
 import { useMainWrapperContext } from "../../contexts/MainWrapperContext";
 
-import AccountDisplay from '../AccountDisplay';
-import AnimatedArrows from '../AnimatedArrows';
 import '../../styles/animations.css'
 import TransferMenu from '../TransferMenu';
 import AddButton from '../AddButton';
@@ -16,16 +14,10 @@ import PaymentPlanWrapper from './PaymentPlanWrapper';
 export default function GoalInfo(props) {
     const { isGoalVisible, currentGoal } = props
     const { showPopup, setShowPopup, setEditMode } = useMainWrapperContext();
-    const { savings } = useMoney();
 
     return (
         <>
-        <Show when={showPopup() === 'transfer'}>
-            <AnimatedArrows/>
-        </Show>
-        <AccountDisplay colorFor='savings' name="Savings" balance={savings()}/>
-
-        <Show when={showPopup() !== 'transfer' && isGoalVisible()}>
+        <Show when={showPopup() !== 'transfer' && isGoalVisible() && currentGoal()}>
             <div id='GoalInfo'>
                 <div class="AddButton-wrapper">
                     <AddButton
@@ -37,13 +29,16 @@ export default function GoalInfo(props) {
                         onClick={() => setShowPopup('transfer')}
                     />
                 </div>
-                <div class='Goal-date-info'>
-                    <div>{currentGoal().name}</div>
-                    <div>Date started: {dateToStr(currentGoal().dateStart)}</div>
-                    <div>{dateDifferenceRounded(currentGoal().dateStart, currentGoal().dateEnd)} to go</div>
+            
+                <PaymentPlanWrapper currentGoal={currentGoal}/>
+                <div id='Goal-date-info'>
+                    <span>Date started: {dateToStr(currentGoal().dateStart)}</span>
+                    <span>{dateDifferenceRounded(currentGoal().dateStart, currentGoal().dateEnd)} to go</span>
                 </div>
-                    <PaymentPlanWrapper currentGoal={currentGoal}/>
 
+                <div id='Goal-notes-wrapper'>Notes:
+                    <div id='Goal-notes'></div>
+                </div>
             </div>
         </Show>
 
@@ -53,6 +48,5 @@ export default function GoalInfo(props) {
             </Show>
         </Show>
         </>
-        
     );
 }

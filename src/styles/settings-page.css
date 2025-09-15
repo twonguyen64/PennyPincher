@@ -70,3 +70,25 @@
 .DateInput-day {width: 2rem;}
 .DateInput-month {width: 3.2rem;}
 .DateInput-year {width: 4rem;}
+
+
+#download-wrapper {
+    display: flex; flex-flow: column;
+    justify-content: space-around;
+    align-items: center;
+    width: 10rem;
+    height: 100%;
+}
+.download-button {
+    width: fit-content;
+    font-size: 0.9rem;
+    padding: 0.3rem;
+    border: 1px solid black;
+    border-radius: 4px;
+}
+#overwrite-db {
+    color: red;
+    border: 1px solid maroon;
+    border-radius: 4px;
+    padding: 0.2rem;
+}

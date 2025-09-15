@@ -1,4 +1,4 @@
-const DB_NAME = "MoneyTrackerDB";
+export const DB_NAME = "PennyPincherDB";
 const DB_VERSION = 1;
 
 export const ACCOUNT_STORE = "account";
@@ -239,3 +239,58 @@ export function getData(db, storeName, key) {
     }
   });
 }
+
+//Dexie import export functionality
+
+import Dexie from "dexie";
+
+
+const dexieDB = new Dexie(DB_NAME);
+dexieDB.version(DB_VERSION).stores({
+  account: 'id',
+  transactions: '++id',
+  budgetExpenses: '++id',
+  savingsGoals: '++id',
+  settings: 'key',
+  tags: '',
+});
+
+
+import { exportDB } from "dexie-export-import";
+
+function downloadBlob(blob, filename) {
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.style.display = 'none';
+  document.body.appendChild(link);
+
+  link.href = url;
+  link.download = filename;
+  link.click();
+
+  window.URL.revokeObjectURL(url);
+  document.body.removeChild(link);
+}
+
+export async function exportDatabase() {
+  let db = null;
+  try {
+    db = new Dexie("PennyPincherDB"); 
+    await db.open(); 
+    
+    const blob = await exportDB(db);
+    downloadBlob(blob, "PennyPincherData.json");
+    console.log("Database exported!");
+  } catch (error) {
+    console.error("Failed to export database:", error);
+  } finally {
+    if (db) {
+      db.close();
+    }
+  }
+}
+
+dexieDB.on('versionchange', () => {
+  console.warn('Database is being upgraded. Closing this connection to the database.');
+  dexieDB.close();
+});

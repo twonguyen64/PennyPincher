@@ -130,27 +130,46 @@ export function dateDifferenceRounded(dateStrStart, dateStrEnd) {
     else return `${timeInDays} days`
 }
 
+/**
+ * The difference between two dates. The unit of time is whatever payFreq is at the moment.
+ */
 export function dateDifference(dateStrStart, dateStrEnd, daysPeriod) {
     const dateStart = new Date(dateStrStart);
     const dateEnd = new Date(dateStrEnd);
     const timeInMilliseconds = Math.abs(dateEnd.getTime() - dateStart.getTime());
     const timeInDays = Math.ceil(timeInMilliseconds / (1000 * 60 * 60 * 24));
 
-    return Math.floor(timeInDays / daysPeriod)
+    const roundedPeriod = Math.floor(timeInDays / daysPeriod)
+    const remainderPeriod = (timeInDays / daysPeriod) - roundedPeriod
+    return {
+        rounded: roundedPeriod,
+        extra: remainderPeriod
+    }
 }
 
-
-export function generatePaymentPlan(goal, totalBudgetCost) {
+/**
+ * 
+ * @param {Object} goal 
+ * @param {Object} payFreq 
+ * @returns {PaymentPlan}
+ */
+export function generatePaymentPlan(goal, payFreq) {
     const { dateStart, dateEnd, target, balance } = goal
-    const numberOfPayments = dateDifference(dateStart, dateEnd, totalBudgetCost.freqInDays)
+    const dateDiff = dateDifference(dateStart, dateEnd, payFreq.value)
+    const endDateString = dateToStr(dateEnd)
+    const numberOfPayments = dateDiff.rounded
+    const extraTimePercentage = dateDiff.extra
+    
     const contributionNeeded = target - balance;
     const paymentAmount = parseInt(contributionNeeded / numberOfPayments)
 
     return new PaymentPlan(
-        totalBudgetCost.freqInDays,
-        totalBudgetCost.freqStr,
+        payFreq.value,
+        payFreq.string,
         paymentAmount,
-        numberOfPayments
+        endDateString,
+        numberOfPayments,
+        extraTimePercentage
     )
 }
 

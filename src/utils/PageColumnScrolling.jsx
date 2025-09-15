@@ -61,7 +61,6 @@ export function usePageColumnScrolling(scrollerRef, pageIndex, setPageIndex) {
             const startScroll = scrollerRef().scrollLeft;
             const newIndex = pageIndex() - 1;
             const targetScroll = newIndex * scrollerRef().clientWidth;
-
             setPageIndex(newIndex); // Update signal immediately
             animateScroll(startScroll, targetScroll, ANIMATION_DURATION);
         }

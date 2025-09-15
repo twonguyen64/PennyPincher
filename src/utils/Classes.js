@@ -7,10 +7,12 @@ export class PaymentPlan {
      * @param {number} paymentAmount - The amount of each payment.
      * @param {number} numberOfPayments - The total number of payments required.
      */
-    constructor(freqInDays, freqStr, paymentAmount, numberOfPayments) {
+    constructor(freqInDays, freqStr, paymentAmount, endDateString, numberOfPayments, extraTimePercentage) {
         this.freqInDays = freqInDays
         this.freqStr = freqStr
         this.paymentAmount = paymentAmount
+        this.endDateString = endDateString
         this.numberOfPayments = numberOfPayments
+        this.extraTimePercentage = extraTimePercentage
     }
 }

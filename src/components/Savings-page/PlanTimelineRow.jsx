@@ -15,7 +15,6 @@ export default function PlanTimelineRow(props) {
     const clickDueDate = () => {
         dueDateInfoRef.classList.toggle('hidden')
     }
-    console.log(props.plan.extraTimePercentage, '% of a biweek')
 
     return (
         <div class="Timeline-rows-item TimelineRow">

@@ -35,7 +35,6 @@ export default function Download() {
 
         try {
             const version = await getFileVersion(databaseFile)
-            console.log(version)
             const db = new Dexie(DB_NAME); 
             db.version(version).stores({
                 account: 'id',

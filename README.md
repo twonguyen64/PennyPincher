@@ -19,6 +19,7 @@ The transactions, balances, and other data you input are stored in the browser u
 - [x] List of transactions (income, expenses) with optional user-defined tags to help sort
 - [X] Budget sheet implementation
 - [X] Savings goal implementation
+    - [ ] Play fun animations when user completes a goal they set.
 - [X] Ability to save & load user profile & data
 - [X] Optional payment plan for each savings goal
     - [X] Display the amount of money the user should contribute each week/biweek/month, based on the end date of the goal.

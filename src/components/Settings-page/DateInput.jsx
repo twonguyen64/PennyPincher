@@ -22,7 +22,6 @@ export default function DateInput(props) {
     }
     
     const [paychequeDate] = createSignal(initalizeDate());
-    console.log(paychequeDate().month)
     return (
         <div class="DateInput">
             <input 

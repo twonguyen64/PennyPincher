@@ -2,12 +2,10 @@ import { onCleanup, onMount } from "solid-js"
 import { useMainWrapperContext } from "../contexts/MainWrapperContext";
 
 export default function usePopup() {
-    console.log('starting')
     const { setShowPopup } = useMainWrapperContext();
     let popupRef
     onMount(() => {
         popupRef = document.querySelector('.popup-wrapper')
-        console.log(popupRef)
         setTimeout(() => {popupRef.classList.add('active')}, 10)
     });
 

@@ -12,7 +12,6 @@ export default function PopupSavings() {
     const [prevGoal, setPrevGoal] = createSignal(null);
     const [excessAmount, setExcessAmount] = createSignal(-1)
 
-    console.log('MOUNTED')
     let nameRef, targetRef, dateRef
     let headerString, submitButtonString;
     if (!editMode()) {

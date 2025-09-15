@@ -15,10 +15,10 @@ export default function PaymentPlan(props) {
         () => pageIndex().savings, 
         pageIndexSetter.savings
     );
-    const { totalBudgetCost } = useMoney();
+    const { payFreq } = useMoney();
     
     const plan = createMemo(() => {
-        const plan = generatePaymentPlan(props.goal, totalBudgetCost())
+        const plan = generatePaymentPlan(props.goal, payFreq())
         return plan
     });
     const percentage = (props.goal.balance / props.goal.target) * 100

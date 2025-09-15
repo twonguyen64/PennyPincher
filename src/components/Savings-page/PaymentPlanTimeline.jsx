@@ -11,14 +11,14 @@ import TimelineDateOverlay from './TimelineDateOverlay';
 import TimelineGridOverlay from './TimelineGridOverlay';
 
 export default function PaymentPlanSummary() {
-    const { goals, totalBudgetCost } = useMoney();
+    const { goals, payFreq } = useMoney();
 
     const goalsWithPaymentPlan = createMemo(() => {
         return goals()
         .filter(goal => goal.hasPaymentPlan)
         .map(goal => ({
             goal: goal,
-            plan: generatePaymentPlan(goal, totalBudgetCost())
+            plan: generatePaymentPlan(goal, payFreq())
         }));
     });
 
@@ -34,7 +34,7 @@ export default function PaymentPlanSummary() {
 
         const maxNumberOfPayments = payments.length > 0 ? Math.max(...payments) : 0;
         document.documentElement.style.setProperty(
-            '--timeline-columns', maxNumberOfPayments
+            '--timeline-columns', maxNumberOfPayments + 1
             //2 extra columns + goal at the end
         );
         return {
@@ -57,7 +57,7 @@ export default function PaymentPlanSummary() {
         <div id='Timeline-calendar-wrapper'>
             <TimelineDateOverlay
             maxColumns={timeline().maxNumberOfPayments}
-            freq={totalBudgetCost().freqInDays}
+            freq={payFreq().value}
             ref={overlayRef}
             />
             <div id='Timeline-calendar'>
@@ -77,7 +77,7 @@ export default function PaymentPlanSummary() {
                                         ${goal.plan.paymentAmount}
                                     </div>
                                     <div class='Timeline-rows-item goal-payments'>
-                                        <b>{goal.plan.numberOfPayments}</b>s left
+                                        <b>{goal.plan.numberOfPayments}</b> left
                                     </div>
                                 </div>
                             );  
@@ -93,7 +93,7 @@ export default function PaymentPlanSummary() {
                     <div id='Timeline-calendar-container-inner'>
                     <TimelineGridOverlay
                     maxColumns={timeline().maxNumberOfPayments}
-                    freq={totalBudgetCost().freqInDays}
+                    freq={payFreq().value}
                     />
                     <For each={goalsWithPaymentPlan()}>
                         {(goal) => {
@@ -111,7 +111,7 @@ export default function PaymentPlanSummary() {
         </div>
         <div class='Total-footer'>
             <span class='Total-footer-value-wrapper'>
-                <div>Total {totalBudgetCost().freqStr.toLowerCase()} contribution: </div>
+                <div>Total {payFreq().string.toLowerCase()} contribution: </div>
                 <div class='Total-footer-value'>$0</div>
             </span>
         </div>

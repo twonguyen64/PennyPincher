@@ -12,7 +12,7 @@ The transactions, balances, and other data you input are stored in the browser u
 <br>
 
 ***********
-#### For instructions on  how to download PWAs, please see _https://web.dev/learn/pwa/installation_ :)
+<!-- #### For instructions on  how to download PWAs, please see _https://web.dev/learn/pwa/installation_ :) -->
 
 ### Built with [SolidJS](https://github.com/solidjs/solid) & [Dexie.js](https://dexie.org/), (HTML, CSS, JS)
 
@@ -28,6 +28,7 @@ The transactions, balances, and other data you input are stored in the browser u
 - [X] Optional payment plan for each savings goal
     - [X] Display the amount of money the user should contribute each week/biweek/month, based on the end date of the goal.
     - [ ] Calendar view of all the user's payment plans
+- [ ] Establish website for users to download this app
 - [ ] Dark mode 
 
 

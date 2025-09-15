@@ -1,6 +1,6 @@
 ## About this project
 
-PennyPincher is a progressive web app (PWA) that is a minimalist budgeting tool, designed so users can quickly & easily:
+_PennyPincher_ is a progressive web app (PWA) that is a minimalist budgeting tool, designed so users can quickly & easily:
 - Keep a record of transactions (income, expenses)
 - Create a weekly, biweekly, or monthly budget sheet.
 - Monitor account balances like savings and allowance, which update in real-time in response to changes in your __transaction list__ & __budget sheet__.
@@ -9,10 +9,14 @@ PennyPincher is a progressive web app (PWA) that is a minimalist budgeting tool,
 
 The transactions, balances, and other data you input are stored in the browser using [IndexedDB](https://www.w3.org/TR/IndexedDB/).
 
+<br>
+
+***********
 #### For instructions on  how to download PWAs, please see _https://web.dev/learn/pwa/installation_ :)
 
 ### Built with [SolidJS](https://github.com/solidjs/solid) & [Dexie.js](https://dexie.org/), (HTML, CSS, JS)
 
+<br><br>
 
 ## Project Roadmap
 

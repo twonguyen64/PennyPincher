@@ -1,19 +1,22 @@
 :root{
-  --footer-height: 3.2rem;
   --font: 'Varela Round';
   --transaction-grid-layout: 1.7fr 1.1fr 1.2fr;
   --budgetlist-grid-layout: 4.2fr 4.2fr 1.5fr;
   font-size: 15px;
 
+  --footer-height: 3.2rem;
+
   --tag-lineheight: 0.8rem;
   --tag-padding: 0.25rem;
   --tag-padding-tagchooser: 0.4rem;
 
+  --goal-scroller-height: 16rem;
+  --goal-scroller-gap: 3rem;
   --goal-height: 9em;
   --goal-width: 12em;
-  --goal-scroller-gap: 3rem;
 
-  --goal-sort-spacer-size: 3rem;
+  --goal-sorter-height: 26rem;
+  --goal-sorter-spacer-size: 3rem;
 
   --toggle-switch-height: 1.4rem;
   --chain-height: 0.3rem;
@@ -28,6 +31,11 @@
   --timeline-column-gap: 4px;
   --timeline-row-gap: 0.5rem;
   --timeline-first-date-column-width: 0;
+
+  --settings-header-height: 4.5rem;
+
+
+
   /*Colors*/
   --allowance-color-light: rgb(191, 224, 235);
   --allowance-color: rgb(149, 195, 216);

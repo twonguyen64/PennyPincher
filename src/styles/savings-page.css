@@ -2,31 +2,87 @@
     overflow-y: auto;
     overflow-x: hidden;
     touch-action: pan-y;
+    gap: 0;
 }
 #Savingspage-main > * {
     flex-shrink: 0;
 }
-#Goals-rearrange-button {
-    align-self: flex-end;
-    font-size: 0.9rem;
-    height: 2.5rem;
-    padding-right: 0.4rem;
-    display: flex; align-items: center;
-    gap: 0.2rem;
-    box-sizing: border-box;
+#Savingspage-main > .page-header {
+    height: 1.5rem
 }
-#Goals-rearrange-button > img {
-    height: 1.6rem;
-    object-fit: contain;
-}
-#Goals-scroller-wrapper {
+#Goal-scroller-wrapper {
     display: flex; flex-flow: column;
-    position: relative;
-    max-height: 1rem;
-    height: 16rem;
+    margin-bottom: 1.5rem;
+    height: 26rem;
+    max-height: 26rem;
     transition: max-height 0.4s;
 }
-#Goals-scroller {
+    #Goal-scroller-wrapper > .account-display {
+        margin-top: auto;
+        
+    }
+    #Goal-scroller-header {
+        width: 98%;
+        display: flex; align-items: center;
+        justify-content: flex-end;
+        gap: 1rem;
+        height: 2.5rem;
+    }
+        #Goal-scroller-header > * {
+            display: flex; align-items: center;
+        }
+        #Goal-sort-button {
+            font-size: 0.9rem;
+            gap: 0.2rem;
+            box-sizing: border-box;
+        }
+        #Goal-sort-button > img {
+            height: 1.6rem;
+            object-fit: contain;
+        }
+        .Goal-scroller-header-button {
+            display: flex; gap: 0.3rem;
+            font-size: 0.82rem;
+            border: 1px solid black;
+            padding: 0.2rem 0.4rem;
+            height: fit-content;
+        }
+        .Goal-scroller-header-button > img {
+            height: 0.9rem;
+        }
+
+        
+    #Goal-scroller-inner-wrapper {
+        height: 100%;
+        max-height: 0;
+        overflow: hidden;
+        height: var(--goal-scroller-height);
+        transition: max-height 0.4s;
+    }
+
+    #Goal-scroller-inner-wrapper.display {
+        max-height: var(--goal-scroller-height);
+    }
+    #Goal-scroller-inner-wrapper.sorter {
+        max-height: var(--goal-sorter-height);
+    }
+    #Goal-scroller-inner-wrapper.sorter,
+    #Goal-scroller-inner-wrapper.to-display {
+        overflow: hidden;
+        height: var(--goal-sorter-height);
+    }
+
+
+    #Goal-scroller-wrapper.sorter {
+        max-height: calc(100% - var(--footer-height) - 1rem);
+    }
+    #Goal-scroller-wrapper.sorter,
+    #Goal-scroller-wrapper.to-display {
+        height: calc(100% - var(--footer-height) - 1rem);
+    }
+
+
+#Goal-scroller {
     position: relative;
     box-sizing: border-box;
     height: 100%;
@@ -36,20 +92,8 @@
     scroll-snap-type: x mandatory;
     background-color: var(--savings-color-light);
 }
-#Goals-scroller-wrapper.row {
-    max-height: 16rem;
-}
-#Goals-scroller-wrapper.column {
-    /*max-height: 80vh*/
-    max-height: 28rem;
-}
-#Goals-scroller-wrapper.column,
-#Goals-scroller-wrapper.to-row {
-    /*height: 80vh*/
-    height: 28rem;
-}
 
-#Goals-scroller > * {
+#Goal-scroller > * {
     flex: none;
     scroll-snap-align: center; 
     height: var(--goal-height);
@@ -59,68 +103,77 @@
 .Goal-buffer {
     width: calc(50% - (var(--goal-width)/2) - var(--goal-scroller-gap)) !important;
 }
-#Goals-scroller .AddButton {
+#Goal-scroller .AddButton {
     justify-content: center;
 }
 
-/*Column version*/
-#Goals-scroller-column-wrapper {
+/*Sorter version*/
+#Goal-sorter-wrapper {
     position: relative;
-    display: flex; flex-flow: column-reverse;
+    display: flex; flex-flow: column;
     height: 100%;
     background-color: var(--savings-color-light);
     overflow: hidden;
     font-size: 0.8rem !important;
-
 }
-#Goals-scroller-column {
-    position: relative;
-    box-sizing: content-box;
-    height: 50%;
-    display: flex; align-items: center;
-    overflow-y: auto;
-    scroll-snap-type: x mandatory;
-}
-#Goals-scroller-column > * {
-    flex-shrink: 0;
-    box-sizing: border-box;
-    transition: 
-    transform 0.3s, 
-    width 0.3s;
-}
-#Goals-scroller-column-wrapper .Goal {   
-    scroll-snap-align: center; 
-    height: var(--goal-height);
-    width: var(--goal-width);
-    font-size: inherit;
-}
-#Goal-scroller-slot-wrapper {
+#Goal-sorter-slot-wrapper {
     display: flex;
     justify-content: center; align-items: center;
-    height: 50%;
+    flex-basis: calc(1.5 * var(--goal-height));
+    flex-shrink: 0;
     font-size: inherit;
 }
-    #Goal-scroller-slot{
+    #Goal-sorter-slot{
         height: var(--goal-height);
         width: var(--goal-width);
         border: 2px dashed black;
         border-radius: 10%;
     }
 
-.Goal-placeholder {
-    width: var(--goal-width);
+#Goal-sorter {
+    position: relative;
+    box-sizing: content-box;
+    flex-grow: 1;
+    flex-shrink: 0;
+    display: flex; align-items: center;
+    overflow-y: auto;
+    scroll-snap-type: x mandatory;
 }
-.Goal-sort-spacer {
-    width: var(--goal-sort-spacer-size);
-    height: 100%;
-    z-index: 10;
-}
-.shift-right {transform: translateX(60%)}
-.shift-left {transform: translateX(-60%)}
+    #Goal-sorter > * {
+        flex-shrink: 0;
+        box-sizing: border-box;
+        transition: 
+        transform 0.3s, 
+        width 0.3s;
+    }
+    #Goal-sorter-wrapper .Goal {   
+        scroll-snap-align: center; 
+        height: var(--goal-height);
+        width: var(--goal-width);
+        font-size: inherit;
+    }
+    #Goal-sorter-wrapper .Goal:active {   
+        filter: brightness(0.85);
+    }
+    .Goal-placeholder {width: var(--goal-width);}
+
+    .Goal-sorter-spacer {
+        height: var(--goal-height) !important;
+        width: var(--goal-sorter-spacer-size);
+        flex-grow: 1;
+        height: 100%;
+        z-index: 10;
+    }
+.shift-right {transform: translateX(calc(-0.5 * var(--goal-height)))}
+.shift-left {transform: translateX(calc(-0.5 * var(--goal-height)))}
 .shrink {
+    flex-grow: 0;
     width: 0 !important;
 }
-
+.spacer-hover {
+    transform: translateX(calc(-0.5 * var(--goal-height)));
+    width: calc(var(--goal-width));
+}
 
 .Goal {
     box-sizing: border-box;
@@ -297,14 +350,31 @@
 }
 
 #Goal-notes-wrapper {
-    width: 95%;
+    width: 96%;
 }
-#Goal-notes {
-    margin-top: 0.4rem;
-    height: 16rem;
-    border: 1px inset black;
-}
+    #Goal-notes {
+        display: block;
+        box-sizing: border-box;
+        overflow-y: auto;
+        margin-top: 0.4rem;
+        height: 16rem;
+        border: 1px solid black;
+        border-radius: 4px;
 
+        padding: 0.8rem;
+        font-family: var(--font);
+    }
+    #Goal-notes:focus {
+    outline-color: var(--savings-color-dark);
+    }
+    #Goal-notes-footer {
+    display: flex; align-items: center;
+    justify-content: flex-end;
+    gap: 1rem;
+    height: 1.5rem;
+    padding: 0.5rem 0;
+    margin-bottom: 4rem;
+}
         
 #Savingspage-timeline {
     gap: 0.4rem;
@@ -428,9 +498,30 @@
                 margin: auto 0;
                 height: 0.5rem;
             }
-            .TimelineRow-calendar-space.filled {
-                background-color: var(--savings-color-mid);
+                .TimelineRow-calendar-space.filled {
+                    background-color: var(--savings-color-mid);
+                }
+            .TimelineRow-due-date {
+                position: relative;
+                margin: auto 0;
+                width: 1rem;
+                height: 1rem;
+                background-color: red;
+                transform: translateX(-50%);
             }
+                .TimelineRow-due-date-info {
+                    position: absolute;
+                    top: 1.5rem; right: 0rem;
+                    height: 1.5rem;
+                    width: 6rem;
+                    font-size: 0.9rem;
+                    line-height: 1.6rem;
+                    padding: 0.3rem;
+                    background-color: white;
+                    border: 1px solid black;
+                    border-radius: 0.6rem;
+                }
+
 
     #Timeline-grid-overlay {
         position: absolute;

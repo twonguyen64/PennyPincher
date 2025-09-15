@@ -4,6 +4,7 @@ body {
   -webkit-user-select: none; /* Safari */
   -ms-user-select: none; /* IE 10 and IE 11 */
   user-select: none;
+  max-width: 800px;
 }
 .hidden-scrollbar {
   -webkit-overflow-scrolling: touch;
@@ -103,10 +104,17 @@ input[type=number] {-moz-appearance: textfield;}
     transform: translateX(var(--toggle-switch-height));
   }
 
+html {
+  display: flex;
+  justify-content: center;
+  background-color: rgb(43, 42, 42);
+}
 
 body {
+  background-color: rgb(238, 238, 238);
   position: fixed;
-  margin: 0; padding: 0;
+  margin:0 auto; 
+  padding: 0;
   height: 100%;
   width: 100%;
   overflow: hidden;
@@ -118,35 +126,13 @@ body {
   flex-flow: column; 
   height: 100%;
 }
-#footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: var(--footer-height);
-  display: flex; 
-  justify-content: space-around;
-  background-color: var(--footer-color)
-}
-  .footerButton {
-    display: flex; flex-flow: column;
-    justify-content: center;
-    gap: 0.1rem;
-    font-size: 0.8rem;
-  }
-  .footerButton > img {
-    padding-top: 0.2rem;
-    height: 1.4rem;
-    object-fit: contain;
-  }
 
 .page-multi {
   position: relative;
   width: 100%;
-  height: 100vh;
-  flex-grow: 1;
-  display: grid; grid-template-columns: 100vw 100vw;
-  overflow-x: hidden;
-  overflow-y: hidden;
+  height: calc(100vh - var(--footer-height));
+  display: grid; grid-template-columns: 100% 100%;
+  overflow: hidden;
 }
 .page-multi.swipe-scroll {
   scroll-snap-type: x mandatory;
@@ -154,11 +140,12 @@ body {
 }
 .page-single {
   position: relative;
-  box-sizing: border-box;
-  padding: 2% 2%;
   height: calc(100vh - var(--footer-height));
   display: flex; flex-flow: column;
   gap: 1.2rem;
+}
+.page-multi > .page-single {
+  height: 100%;
 }
 .page-multi.swipe-scroll > .page-single {
   scroll-snap-align: center; 
@@ -185,7 +172,33 @@ body {
 }
 #backButton {
   align-self: flex-start;
+  padding: 0.5rem;
   height: 1.5rem;
   transition: transform 1s;
   z-index: 3;
 }
+
+
+#footer {
+  z-index: 20;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: var(--footer-height);
+  display: flex; 
+  justify-content: space-around;
+  background-color: var(--footer-color)
+  
+}
+  .footerButton {
+    display: flex; flex-flow: column;
+    justify-content: center; align-items: center;
+    gap: 0.1rem;
+    font-size: 0.8rem;
+    width: 6rem;
+  }
+  .footerButton > img {
+    padding-top: 0.2rem;
+    height: 1.4rem;
+    object-fit: contain;
+  }

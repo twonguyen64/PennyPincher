@@ -1,11 +1,12 @@
+import { createSignal, onMount } from "solid-js"
 import SavingsGoal from "./SavingsGoal"
 
 export default function GoalScrollerColumn(props) {
     const SCROLL_DELAY = 400
     const INSERT_DELAY = 100
-    const INIT_TOUCH_DELAY = 600
+    const INIT_TOUCH_DELAY = 400
 
-    const SPACER_CLASS = 'Goal-sort-spacer'
+    const SPACER_CLASS = 'Goal-sorter-spacer'
     const SHRINK_CLASS = 'shrink'
     const SHIFT_LEFT_CLASS = 'shift-left'
     const SHIFT_RIGHT_CLASS = 'shift-right'
@@ -68,6 +69,7 @@ export default function GoalScrollerColumn(props) {
         isDragging = true;
         scrollerRef.style.scrollSnapType = 'none'
         e.target.style.position = 'absolute'
+        e.target.style.filter = 'brightness(0.85)'
 
         const mouseX = e.touches[0].clientX
         const mouseY = e.touches[0].clientY
@@ -87,7 +89,6 @@ export default function GoalScrollerColumn(props) {
             }, 20)
         }
         dragContainerRef.appendChild(e.target)
-        console.log(placeholder)
     }
 
     function onDrag(e) {
@@ -112,6 +113,7 @@ export default function GoalScrollerColumn(props) {
             prevSpacer = eleUnderMouse
             hoverTimer = setTimeout(() => {
                 makeSpaceAroundElement(prevSpacer, 'add')
+                prevSpacer.classList.add('spacer-hover')
                 readyToInsert = true
                 hoverTimer = null;
             }, INSERT_DELAY);
@@ -119,12 +121,14 @@ export default function GoalScrollerColumn(props) {
         // If mouse has moved away from the previous spacer
         else if (!isSpacer && prevSpacer) {
             if (hoverTimer) clearTimeout(hoverTimer);
+
             makeSpaceAroundElement(prevSpacer, 'remove')
+            prevSpacer.classList.remove('spacer-hover')
             readyToInsert = false
             prevSpacer = null;
         }
     }
-
+    
     function onDragEnd(e) {
         const slotRect = slotRef.getBoundingClientRect();
         const endTouchX = e.changedTouches[0].clientX;
@@ -154,8 +158,7 @@ export default function GoalScrollerColumn(props) {
             prevSpacer.insertAdjacentElement('beforebegin', newSpacer)
             prevSpacer.insertAdjacentElement('beforebegin', e.target)
             e.target.removeAttribute('style');
-            
-            console.log(placeholder)
+
             if (placeholder) {
                 placeholder.previousElementSibling.remove()
                 placeholder.remove()
@@ -163,6 +166,7 @@ export default function GoalScrollerColumn(props) {
 
             if (hoverTimer) clearTimeout(hoverTimer);
             makeSpaceAroundElement(prevSpacer, 'remove')
+            prevSpacer.classList.remove('spacer-hover')
             readyToInsert = false
             prevSpacer = null;
             return
@@ -231,11 +235,12 @@ export default function GoalScrollerColumn(props) {
         targetEle.style.top = `${posY}px`;
     }
 
+    /**Each array starts from the closest to the farthest element from center */
     function getAdjacentSiblings(centerElement) {
         const leftSiblings = [];
         let currentLeft = centerElement.previousElementSibling;
         while (currentLeft) {
-            leftSiblings.unshift(currentLeft);
+            leftSiblings.push(currentLeft);
             currentLeft = currentLeft.previousElementSibling;
         }
 
@@ -258,14 +263,21 @@ export default function GoalScrollerColumn(props) {
      */
     function makeSpaceAroundElement(centerElement, addOrRemove) {
         const siblings = getAdjacentSiblings(centerElement)
+        const leftLength = siblings.left.length;
+        const rightLength = siblings.right.length;
+        const maxLength = Math.max(leftLength, rightLength);
         switch (addOrRemove) {
             case 'add':
-                for (const ele of siblings.left) ele.classList.add(SHIFT_LEFT_CLASS)
-                for (const ele of siblings.right) ele.classList.add(SHIFT_RIGHT_CLASS)
+                for (let i = 0; i < maxLength; i++) {
+                    if (i < leftLength) siblings.left[i].classList.add(SHIFT_LEFT_CLASS);
+                    if (i < rightLength) siblings.right[i].classList.add(SHIFT_RIGHT_CLASS);
+                }
             break;
             case 'remove':
-                for (const ele of siblings.left) ele.classList.remove(SHIFT_LEFT_CLASS)
-                for (const ele of siblings.right) ele.classList.remove(SHIFT_RIGHT_CLASS)
+                for (let i = 0; i < maxLength; i++) {
+                    if (i < leftLength) siblings.left[i].classList.remove(SHIFT_LEFT_CLASS);
+                    if (i < rightLength) siblings.right[i].classList.remove(SHIFT_RIGHT_CLASS);
+                }
             break;
         }
     }
@@ -273,10 +285,7 @@ export default function GoalScrollerColumn(props) {
     /**Centers scroller on the middle element after being inserted back into the list */
     function scrollToGoal(item, container) {
         //Important since spacer width affects the end result
-        const rootStyles = getComputedStyle(document.documentElement);
-        const spacerWidthRem = rootStyles.getPropertyValue('--goal-sort-spacer-size');
-        const fontSize = rootStyles.getPropertyValue('font-size')
-        const spacerWidthPx = parseFloat(fontSize) * parseFloat(spacerWidthRem)
+        const spacerWidthPx = getElementWidthInPixels('--goal-sorter-spacer-size')
 
         const itemLeft = item.offsetLeft || 0;
         const itemWidth = item.offsetWidth || 0;
@@ -293,20 +302,35 @@ export default function GoalScrollerColumn(props) {
             container.style.scrollSnapType = '';
         }, {once: true})
     }
+    
+    function getElementWidthInPixels(propertyName) {
+        const rootStyles = getComputedStyle(document.documentElement);
+        const spacerWidthRem = rootStyles.getPropertyValue(propertyName);
+        const fontSize = rootStyles.getPropertyValue('font-size')
+        const widthInPixels = parseFloat(fontSize) * parseFloat(spacerWidthRem)
+        return widthInPixels
+    }
+
+    const [sortedGoals, setSortedGoals] = createSignal([]);
+    onMount(() => {
+        setSortedGoals(props.goals);
+    })
 
     return (
         <div 
-        id="Goals-scroller-column-wrapper"
-        ontouchstart={handleTouchStart}
+        id="Goal-sorter-wrapper"
+        onTouchStart={handleTouchStart}
         ref={dragContainerRef}>
+            <div id="Goal-sorter-slot-wrapper">
+                <div id="Goal-sorter-slot" ref={slotRef}></div>
+            </div>
             <div 
-            id="Goals-scroller-column" 
-            class="hidden-scrollbar" 
+            id="Goal-sorter" 
             ref={scrollerRef}
             >
                 <div class={SPACER_CLASS}></div>
                 
-                <For each={props.goals}>
+                <For each={sortedGoals()}>
                     {(goal) => (
                         <>
                         <SavingsGoal
@@ -319,9 +343,6 @@ export default function GoalScrollerColumn(props) {
                         </>
                     )}
                 </For>
-            </div>
-            <div id="Goal-scroller-slot-wrapper">
-                <div id="Goal-scroller-slot" ref={slotRef}></div>
             </div>
         </div>
     )

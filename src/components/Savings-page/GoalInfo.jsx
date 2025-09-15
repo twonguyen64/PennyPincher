@@ -5,6 +5,7 @@ import { useMainWrapperContext } from "../../contexts/MainWrapperContext";
 import '../../styles/animations.css'
 import TransferMenu from '../TransferMenu';
 import AddButton from '../AddButton';
+import GoalNotes from './GoalNotes';
 
 import editIcon from '../../assets/edit-borderless.svg'
 import uploadIcon from '../../assets/upload.svg'
@@ -36,9 +37,7 @@ export default function GoalInfo(props) {
                     <span>{dateDifferenceRounded(currentGoal().dateStart, currentGoal().dateEnd)} to go</span>
                 </div>
 
-                <div id='Goal-notes-wrapper'>Notes:
-                    <div id='Goal-notes'></div>
-                </div>
+                <GoalNotes currentGoal={currentGoal}/>
             </div>
         </Show>
 

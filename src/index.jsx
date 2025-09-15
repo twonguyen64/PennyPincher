@@ -5,6 +5,7 @@ import App from './App';
 import Home from './pages/Home';
 import Budget from './pages/Budget';
 import Savings from './pages/Savings'
+import Settings from './pages/Settings';
 const root = document.getElementById('root');
 
 if (import.meta.env.DEV && !(root instanceof HTMLElement)) {
@@ -18,5 +19,6 @@ render(() => (
     <Route path="/" component={Home} />
     <Route path="/budget" component={Budget} />
     <Route path="/savings" component={Savings} />
+    <Route path="/settings" component={Settings} />
   </Router>
 ), root);

@@ -1,15 +1,18 @@
 import { onMount, createSignal, Switch, Match, Show } from 'solid-js'
+import usePopup from '../../utils/Popup';
 import { useMainWrapperContext } from '../../contexts/MainWrapperContext';
 import { useMoney } from '../../contexts/MoneyContext';
 import { GOALS_STORE } from '../../utils/db';
 import { getObjectFromScroller, getDateFiveYearsFromNow, getElementFromObjectID } from '../../utils/util-functions'
 
 export default function PopupSavings() {
-    const { editMode, setEditMode, setShowPopup } = useMainWrapperContext();
+    const { exitPopup } = usePopup();
+    const { editMode, setEditMode } = useMainWrapperContext();
     const { goals, addTransaction, editTransaction, changeSavings } = useMoney();
     const [prevGoal, setPrevGoal] = createSignal(null);
     const [excessAmount, setExcessAmount] = createSignal(-1)
 
+    console.log('MOUNTED')
     let nameRef, targetRef, dateRef
     let headerString, submitButtonString;
     if (!editMode()) {
@@ -25,7 +28,7 @@ export default function PopupSavings() {
     });
 
     const initalizeEditMode = () => {
-        const scroller = document.getElementById('Goals-scroller')
+        const scroller = document.getElementById('Goal-scroller')
         const currentGoal = getObjectFromScroller(scroller, goals())
         setPrevGoal(currentGoal)
         nameRef.value = currentGoal.name
@@ -46,6 +49,7 @@ export default function PopupSavings() {
 
     const addGoal = async () => {
         const newGoal = {
+            index: goals().length || 0,
             dateStart: new Date().toISOString().split('T')[0],
             dateEnd: dateRef.value,
             name: nameRef.value,
@@ -54,12 +58,12 @@ export default function PopupSavings() {
             hasPaymentPlan: false
         }
         const addedGoal = await addTransaction(newGoal, GOALS_STORE)
-        const scrollRef = document.getElementById('Goals-scroller')
+        const scrollRef = document.getElementById('Goal-scroller')
         const newGoalElement = getElementFromObjectID(scrollRef, addedGoal.id)
         if (newGoalElement) {
             newGoalElement.scrollIntoView({behavior: 'instant',inline: 'center'});
         }
-        setShowPopup('')
+        exitPopup()
     }
 
     const editGoalPart1 = () => {
@@ -78,6 +82,7 @@ export default function PopupSavings() {
             ...prevGoal(),
             name: nameRef.value,
             target: parseInt(targetRef.value),
+            dateEnd: dateRef.value,
         }
         if (excessAmount() > 0) {
             editedGoal.balance = editedGoal.target
@@ -89,84 +94,82 @@ export default function PopupSavings() {
     }
     const cancel = () => {
         setEditMode(false)
-        setShowPopup('')
+        exitPopup()
     }
     return (
-        <div class='background'>
-            <div class="popup-wrapper">
-                <div class="popup">
-                    <h3>{headerString}</h3>
-                    <div id='Goal-popup-input-section'>
-                    <div class='popupfield delete'>🗑️</div>
-                    
-                    
-                    <div class='popupfield seperated'>
-                        <label>Name:</label>
-                        <input
-                            type="text"
-                            ref={nameRef}
-                        />
-                    </div>
-
-                    <div class='popupfield seperated'>
-                        <span>Target:</span>
-                        <span>
-                            <span>$
-                                <input 
-                                class='moneyInput' 
-                                type='number'
-                                placeholder={0}
-                                ref={targetRef}/>
-                            </span>
-                        </span>
-                    </div>
-                    <div class='popupfield seperated'>
-                        <span>Target Date <span style={'font-size: 0.9em'}>(optional)</span></span>
-                        <span>
-                            <input 
-                                type="date"
-                                ref={dateRef}
-                                value={new Date().toISOString().split('T')[0]}
-                                min={new Date().toISOString().split('T')[0]}
-                                max={getDateFiveYearsFromNow()}
-                            />
-                        </span>
-                    </div>
-            
-                    </div>
-                    <Switch fallback={
-                        <div class='popupfield spaced'>
-                            <button onClick={() => cancel()}>Cancel</button>
-                            <button onClick={submit}>{submitButtonString}</button>
-                        </div>
-                    }>  
-                        <Match when={excessAmount() >= 0}>
-                            <div class='popupfield message'>
-                                <div>Lowering the target to this value means that you'll reached your goal.</div>
-                                <Show when={excessAmount() > 0}>
-                                    <div>
-                                        There is <b>${excessAmount()}</b> of excess funds left over. 
-                                        This money will be deposited back into your savings.
-                                    </div>
-                                </Show>
-                            </div>
-                            <div class='popupfield spaced'>
-                                <button onClick={() => {
-                                    targetRef.value = prevGoal().target
-                                    setExcessAmount(-1)
-                                    const inputSection = document.getElementById('Goal-popup-input-section')
-                                    inputSection.classList.remove('no-pointer-events')
-                                    }
-                                }>Go back</button>
-                                <button onClick={() => {
-                                    const inputSection = document.getElementById('Goal-popup-input-section')
-                                    inputSection.classList.remove('no-pointer-events')
-                                    editGoalPart2();
-                                }}>Confirm & Save</button>
-                            </div>
-                        </Match>
-                    </Switch>
+        <div class="popup-wrapper">
+            <div class="popup">
+                <h3>{headerString}</h3>
+                <div id='Goal-popup-input-section'>
+                <div class='popupfield delete'>🗑️</div>
+                
+                
+                <div class='popupfield seperated'>
+                    <label>Name:</label>
+                    <input
+                        type="text"
+                        ref={nameRef}
+                    />
                 </div>
+
+                <div class='popupfield seperated'>
+                    <span>Target:</span>
+                    <span>
+                        <span>$
+                            <input 
+                            class='moneyInput' 
+                            type='number'
+                            placeholder={0}
+                            ref={targetRef}/>
+                        </span>
+                    </span>
+                </div>
+                <div class='popupfield seperated'>
+                    <span>Target Date <span style={'font-size: 0.9em'}>(optional)</span></span>
+                    <span>
+                        <input 
+                            type="date"
+                            ref={dateRef}
+                            value={new Date().toISOString().split('T')[0]}
+                            min={new Date().toISOString().split('T')[0]}
+                            max={getDateFiveYearsFromNow()}
+                        />
+                    </span>
+                </div>
+        
+                </div>
+                <Switch fallback={
+                    <div class='popupfield spaced'>
+                        <button onClick={() => cancel()}>Cancel</button>
+                        <button onClick={submit}>{submitButtonString}</button>
+                    </div>
+                }>  
+                    <Match when={excessAmount() >= 0}>
+                        <div class='popupfield message'>
+                            <div>Lowering the target to this value means that you'll reached your goal.</div>
+                            <Show when={excessAmount() > 0}>
+                                <div>
+                                    There is <b>${excessAmount()}</b> of excess funds left over. 
+                                    This money will be deposited back into your savings.
+                                </div>
+                            </Show>
+                        </div>
+                        <div class='popupfield spaced'>
+                            <button onClick={() => {
+                                targetRef.value = prevGoal().target
+                                setExcessAmount(-1)
+                                const inputSection = document.getElementById('Goal-popup-input-section')
+                                inputSection.classList.remove('no-pointer-events')
+                                }
+                            }>Go back</button>
+                            <button onClick={() => {
+                                const inputSection = document.getElementById('Goal-popup-input-section')
+                                inputSection.classList.remove('no-pointer-events')
+                                editGoalPart2();
+                            }}>Confirm & Save</button>
+                        </div>
+                    </Match>
+                </Switch>
             </div>
         </div>
     );

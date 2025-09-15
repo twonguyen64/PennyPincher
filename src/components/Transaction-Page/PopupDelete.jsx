@@ -32,31 +32,14 @@ export default function PopupDelete(props) {
         setShowPopup('');
     };
     
-    if (props.store === TRANSACTIONS_STORE)
-        return (
-            <div class='background'>
-                <div class="popup-wrapper">
-                    <div class="popup">
-                        <p>Are you sure you want to delete these items?</p>
-                        <div class='popupfield spaced'>
-                            <button onClick={() => setShowPopup('')}>Cancel</button>
-                            <button onClick={() => deleteSelectedExpenses()}>Delete</button>
-                        </div>
+    return (
+       
+                <div class="popup">
+                    <p>Are you sure you want to delete these items?</p>
+                    <div class='popupfield spaced'>
+                        <button onClick={() => setShowPopup('')}>Cancel</button>
+                        <button onClick={() => deleteSelectedExpenses()}>Delete</button>
                     </div>
                 </div>
-            </div>
-        );
-    else return (
-            <div class='background'>
-                <div class="popup-wrapper">
-                    <div class="popup">
-                        <p>Are you sure you want to delete these items?</p>
-                        <div class='popupfield spaced'>
-                            <button onClick={() => setShowPopup('')}>Cancel</button>
-                            <button onClick={() => deleteSelectedExpenses()}>Delete</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-    )
+    );
 }

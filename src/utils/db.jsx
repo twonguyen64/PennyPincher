@@ -202,6 +202,10 @@ export async function loadData(db, storeName, key) {
  */
 export function putData(db, storeName, data) {
   return new Promise(async (resolve, reject) => {
+    if (!db) {
+      reject(new Error('Database is not initialized.'));
+      return;
+    }
     try {
       const transaction = db.transaction(storeName, 'readwrite');
       const store = transaction.objectStore(storeName);

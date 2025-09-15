@@ -1,4 +1,4 @@
-import { Show, For,  createMemo, onMount} from 'solid-js'
+import { Show, For,  createMemo, createSignal, createEffect} from 'solid-js'
 import { useMainWrapperContext } from '../contexts/MainWrapperContext';
 import { useMoney } from '../contexts/MoneyContext';
 import { BUDGET_STORE } from '../utils/db';
@@ -9,24 +9,38 @@ import PopupBudget from '../components/Budget-page/PopupBudget';
 import PopupDelete from '../components/Transaction-Page/PopupDelete';
 import BudgetExpense from '../components/Budget-page/BudgetExpense'
 import EditModeMenu from '../components/EditModeMenu';
-import BackgroundBlur from '../components/BackgroundBlur';
 import AddButton from '../components/AddButton';
 
 export default function Budget() {
     const { 
         editMode, setEditMode,
         showPopup, setShowPopup, 
-        payFreq, setPayFreq 
     } = useMainWrapperContext();
     
-    const { budgetExpenses, setTotalBudgetCost } = useMoney();
+    const { budgetExpenses, payFreq, setPayFreq, totalBudgetCost, setTotalBudgetCost } = useMoney();
 
-    let biweekly
-    onMount(() => {
-        biweekly.classList.add('selected')
+    let weekly, biweekly, monthly
+    createEffect(() => {
+        if (payFreq) {
+            switch(payFreq().value) {
+                case 7:
+                    weekly.classList.add('selected')
+                    biweekly.classList.remove('selected')
+                    monthly.classList.remove('selected')
+                    break;
+                case 14:
+                    weekly.classList.remove('selected')
+                    biweekly.classList.add('selected')
+                    monthly.classList.remove('selected')
+                    break;
+                case 30:
+                    weekly.classList.remove('selected')
+                    biweekly.classList.remove('selected')
+                    monthly.classList.add('selected')
+                    break;
+            }
+        }
     })
-
-    let listRef;
 
     /**
      * @param {Array} expensesArray Array of budget expenses
@@ -44,38 +58,28 @@ export default function Budget() {
     const setPaymentFrequency = (e) => {
         if (e.target.tagName != 'SPAN') return
         //Avoid redundant update
-        if (payFreq() === parseInt(e.target.getAttribute('days'))) return
-        const payFrequencyInDays = parseInt(e.target.getAttribute('days'))
-        setPayFreq(payFrequencyInDays)
-
-        const prevSelected = budgetHeaderOptions.querySelector('.selected')
-        if (prevSelected) prevSelected.classList.remove('selected')
-        e.target.classList.add('selected')
-    }
-    const payFrequencyStr = createMemo(() => {
-        const payFrequencyStrings = {
+        if (payFreq().value === parseInt(e.target.getAttribute('days'))) return
+        const payFreqValue = parseInt(e.target.getAttribute('days'))
+        
+        const payFreqStrings = {
             7: 'Weekly',
             14: 'Bi-weekly',
             30: 'Monthly'
         }
-        return payFrequencyStrings[payFreq()]
-    });
+        const newPayFreq =  {
+            value: payFreqValue,
+            string: payFreqStrings[payFreqValue]
+        }
+        
+        setPayFreq(newPayFreq)
+    }
 
     //Memos:
     const totalCostPerPeriod = createMemo(() => {
+        if (!totalBudgetCost()) return 0
+        
         const totalCost = calculateAmountPerPeriod(budgetExpenses(), payFreq())
-        const payFrequencyStrings = {
-            'Weekly': 7,
-            'Bi-weekly': 14,
-            'Monthly': 30
-        }
-        setTimeout(() => { //Defer storing to DB right away
-            setTotalBudgetCost({
-                freqInDays: payFrequencyStrings[payFrequencyStr()],
-                freqStr: payFrequencyStr(),
-                amount: totalCost
-            });
-        }, 200)
+        setTotalBudgetCost(totalCost)
         return totalCost
     });
 
@@ -90,85 +94,83 @@ export default function Budget() {
     });
 
     return (
+        <>
+        <Show when={showPopup() === 'budget'}>
+            <PopupBudget/>
+        </Show>
+        <Show when={showPopup() === 'delete'}>
+            <PopupDelete store={BUDGET_STORE}/>
+        </Show>
         <div class='page-single' ontouchstart="">
-            <BackgroundBlur/>
             <div id='budgetpage-scroller'>
-            <Show when={showPopup() === 'budget'}>
-                <PopupBudget/>
-            </Show>
-            <Show when={showPopup() === 'delete'}>
-                <PopupDelete store={BUDGET_STORE}/>
-            </Show>
-            <div class='page-header-empty'></div>
+                <div class='page-header-empty'></div>
 
-            <Switch fallback={
-                <div id="TransactionList-upper-wrapper">
-                    <span style={'font-weight: bold;'}>Budget Sheet</span>
-                    <Show when={budgetExpenses().length > 0}>
-                        <div class='borderless-button' onClick={() => setEditMode(true)}>
-                            <img src={editImg} alt=""/>
-                            Edit
-                        </div>
-                    </Show>
-                </div>
-                }>
-            <Match when={editMode()}>
-                <EditModeMenu/>
-            </Match>
-            </Switch>
-
-
-            <div id="budgetHeader">
-                <span>How often do you get paid?</span>
-                <span id="BudgetHeader-options-wrapper" ref={budgetHeaderOptions} onClick={setPaymentFrequency}>
-                    <span class='BudgetHeader-options' days={7}>Weekly</span>
-                    <span class='BudgetHeader-options' days={14} ref={biweekly}>Bi-weekly</span>
-                    <span class='BudgetHeader-options' days={30}>Monthly</span>
-                </span>
-            </div>
-            <div id='BudgetList' ref={listRef}>
-            <For each={budgetExpensesByTag()}>
-                {([tag, expenses]) => {
-                    const totalCostForTag = createMemo(() => {
-                        return calculateAmountPerPeriod(expenses, payFreq())
-                    });
-
-                    return (
-                        <div class='BudgetList-TagGroup'>
-                            <div class='BudgetList-TagGroup-summary BudgetList-grid'>
-                                <span class='BudgetList-TagGroup-tag'>{tag}</span>
-                                <span class='BudgetList-TagGroup-cost-str'>{payFrequencyStr()} cost:</span>
-                                <span class='BudgetList-TagGroup-cost-total'>${totalCostForTag}</span>
-
+                <Switch fallback={
+                    <div id="TransactionList-upper-wrapper">
+                        <span style={'font-weight: bold;'}>Budget Sheet</span>
+                        <Show when={budgetExpenses().length > 0}>
+                            <div class='borderless-button' onClick={() => setEditMode(true)}>
+                                <img src={editImg} alt=""/>
+                                Edit
                             </div>
-                            <For each={expenses}>
-                                {(expense) => (
-                                    <BudgetExpense
-                                    objectID={expense.id}
-                                    name={expense.name}
-                                    cost={expense.cost}
-                                    freq={expense.freq}
-                                    freqStr={expense.freqStr}
-                                    />
-                                )}
-                            </For>
-                        </div>
-                    );
-                }}
-            </For>
-            </div>
-            <AddButton
-                icon={addIcon} text={'Add a budget item'} 
-                onClick={() => setShowPopup('budget')}
-            />
+                        </Show>
+                    </div>
+                    }>
+                <Match when={editMode()}>
+                    <EditModeMenu/>
+                </Match>
+                </Switch>
+
+
+                <div id="budgetHeader">
+                    <span>How often do you get paid?</span>
+                    <span id="BudgetHeader-options-wrapper" ref={budgetHeaderOptions} onTouchEnd={setPaymentFrequency}>
+                        <span class='BudgetHeader-options' days={7} ref={weekly}>Weekly</span>
+                        <span class='BudgetHeader-options' days={14} ref={biweekly}>Bi-weekly</span>
+                        <span class='BudgetHeader-options' days={30} ref={monthly}>Monthly</span>
+                    </span>
+                </div>
+                <div id='BudgetList'>
+                <For each={budgetExpensesByTag()}>
+                    {([tag, expenses]) => {
+                        const totalCostForTag = createMemo(() => {
+                            return calculateAmountPerPeriod(expenses, payFreq().value)
+                        });
+
+                        return (
+                            <div class='BudgetList-TagGroup'>
+                                <div class='BudgetList-TagGroup-summary BudgetList-grid'>
+                                    <span class='BudgetList-TagGroup-tag'>{tag}</span>
+                                    <span class='BudgetList-TagGroup-cost-str'>{payFreq().string} cost:</span>
+                                    <span class='BudgetList-TagGroup-cost-total'>${totalCostForTag}</span>
+
+                                </div>
+                                <For each={expenses}>
+                                    {(expense) => (
+                                        <BudgetExpense
+                                        expense={expense}
+                                        payFreqValue={payFreq().value}
+                                        />
+                                    )}
+                                </For>
+                            </div>
+                        );
+                    }}
+                </For>
+                </div>
+                <AddButton
+                    icon={addIcon} text={'Add a budget item'} 
+                    onClick={() => setShowPopup('budget')}
+                />
             </div>
             
             <div class='Total-footer'>
                 <span class='Total-footer-value-wrapper'>
-                    <div>Total {payFrequencyStr().toLowerCase()} expenses: </div>
+                    <div>Total {payFreq().string.toLowerCase()} expenses: </div>
                     <div class='Total-footer-value'>${totalCostPerPeriod()}</div>
                 </span>
             </div>
         </div>
+        </>
     )
 }

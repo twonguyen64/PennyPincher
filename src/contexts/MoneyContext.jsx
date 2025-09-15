@@ -16,7 +16,9 @@ const MoneyContext = createContext();
 export function MoneyProvider(props) {
     const [allowance, setAllowance] = createSignal(0)
     const [savings, setSavings] = createSignal(0)
-    const [totalBudgetCost, _setTotalBudgetCost] = createSignal({freqStr:'Biweekly', amount:0})
+    const [totalBudgetCost, _setTotalBudgetCost] = createSignal(0)
+    const [payFreq, _setPayFreq] = createSignal({value: 14, string:'Bi-weekly'})
+    const [payDate, _setPayDate] = createSignal('2026-01-01')
 
     const [transactions, setTransactions] = createSignal([]);
     const [transactionTags, setTransactionTags] = createSignal([]);
@@ -29,7 +31,10 @@ export function MoneyProvider(props) {
             db = await openDatabase();
             const storedAllowance = await getData(db, ACCOUNT_STORE, 'allowance');
             const storedSavings = await getData(db, ACCOUNT_STORE, 'savings');
+            const storedPayFreq = await getData(db, ACCOUNT_STORE, 'payFreq');
             const storedTotalBudgetCost = await getData(db, ACCOUNT_STORE, 'totalBudgetCost');
+            const storedPayDate = await getData(db, ACCOUNT_STORE, 'payDate');
+
 
             const storedTransactions = await loadData(db, TRANSACTIONS_STORE);
             const storedBudgetExpenses = await loadData(db, BUDGET_STORE);
@@ -38,7 +43,9 @@ export function MoneyProvider(props) {
 
             if (storedAllowance) setAllowance(storedAllowance.value || 0);
             if (storedSavings) setSavings(storedSavings.value || 0);
+            if (storedPayFreq) _setPayFreq(storedPayFreq.value || {value: 14, string:'Bi-weekly'});
             if (storedTotalBudgetCost) _setTotalBudgetCost(storedTotalBudgetCost.value || 0);
+            if (storedPayDate) _setPayDate(storedPayDate || '2026-01-01')
 
             if (storedTransactions.length > 0) {
                 setTransactions(storedTransactions);
@@ -47,6 +54,8 @@ export function MoneyProvider(props) {
                 setBudgetExpenses(storedBudgetExpenses);
             }
             if (storedGoals.length > 0) {
+                //Sort goals by index
+                storedGoals.sort((a, b) => a.index - b.index);
                 setGoals(storedGoals);
             }
             if (storedTags.length > 0) {
@@ -77,18 +86,6 @@ export function MoneyProvider(props) {
         }
         return setter
     }
-    const getSetterFromSignalName = (signalName) => {
-        let setter
-        switch (signalName) {
-            case 'allowance':
-                setter = setAllowance;
-                break;
-             case 'savings':
-                setter = setSavings;
-                break; 
-        }
-        return setter
-    }
 
     const saveToAccount = async (signalName, signalValue) => {
         const data = {
@@ -106,15 +103,22 @@ export function MoneyProvider(props) {
         setAllowance(prev => prev + amount);
         saveToAccount('allowance', allowance());
     }
-
     const changeSavings = (amount) => {
         setSavings(prev => prev + amount);
         saveToAccount('savings', savings());
+    };
+    const setPayFreq = (object) => {
+        _setPayFreq(object);
+        saveToAccount('payFreq', payFreq());
     };
     const setTotalBudgetCost = (object) => {
         _setTotalBudgetCost(object);
         saveToAccount('totalBudgetCost', totalBudgetCost());
     };
+    const setPayDate = (string) => {
+        _setPayDate(string)
+        saveToAccount('payDate', payDate());
+    }
 
 
     /**
@@ -237,12 +241,13 @@ export function MoneyProvider(props) {
 
         allowance, changeAllowance,
         savings, changeSavings,
+        payFreq, setPayFreq,
         totalBudgetCost, setTotalBudgetCost,
+        payDate, setPayDate,
 
         transactions,
         budgetExpenses,
-        goals,
-
+        goals, setGoals, //A setter is required for arrays that can be reordered (goals)
         transactionTags,
     };
 

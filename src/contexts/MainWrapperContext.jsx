@@ -25,7 +25,6 @@ export function MainWrapperProvider(props) {
   const [editMode, setEditMode] = createSignal(false);
   const [checkboxCount, setCheckboxCount] = createSignal(0);
   const [selectedTag, setSelectedTag] = createSignal('');
-  const [payFreq, setPayFreq] = createSignal(14)
 
   /** Either a amount ('contribution') OR a perctange of the total deposit ('percentage') */
   const [savingsType, _setSavingsType] = createSignal('contribution');
@@ -62,7 +61,6 @@ export function MainWrapperProvider(props) {
     selectedTag, setSelectedTag,
     
     savingsType, setSavingsType,
-    payFreq, setPayFreq,
   };
 
   return (

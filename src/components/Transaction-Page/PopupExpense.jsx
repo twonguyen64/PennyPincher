@@ -1,4 +1,5 @@
 import { onMount, createSignal } from 'solid-js'
+import usePopup from '../../utils/Popup'
 import { useMainWrapperContext } from '../../contexts/MainWrapperContext'
 import { useMoney } from '../../contexts/MoneyContext'
 import { TRANSACTIONS_STORE } from '../../utils/db'
@@ -8,7 +9,9 @@ import AccountDisplay from '../AccountDisplay';
 import TagChooser from '../TagChooser';
 
 export default function PopupExpense() {
-    const { setShowPopup, setCheckboxCount, editMode } = useMainWrapperContext();
+    const { exitPopup } = usePopup();
+    
+    const { setCheckboxCount, editMode } = useMainWrapperContext();
     const { 
         transactions, addTransaction, editTransaction, 
         allowance, changeAllowance 
@@ -64,7 +67,7 @@ export default function PopupExpense() {
         }
         addTransaction(newTransaction, TRANSACTIONS_STORE)
         changeAllowance(-1 * expenseAmount);
-        setShowPopup('')
+        exitPopup()
     }
 
     const editExpense = () => {
@@ -91,44 +94,41 @@ export default function PopupExpense() {
         
         document.querySelector('.editModeCheckbox:checked').checked = false
         setCheckboxCount(0)
-        setShowPopup('')
+        exitPopup()
     }
-
     
     return (
-        <div class='background'>
-            <div class='popup-wrapper'>
-                <div class='popup'>
-                    <h3 class='popupfield alignleft'>{headerString}</h3>
-                    
-                    <AccountDisplay colorFor="allowance" name="Allowance" balance={allowance()}/>
-                    
-                    <div class='popupfield spaced'>
-                        <label for="transactionName">Name:</label>
-                        <input
-                            id="transactionName"
-                            type="text"
-                            ref={nameRef}
+        <div class='popup-wrapper'>
+            <div class='popup'>
+                <h3 class='popupfield alignleft'>{headerString}</h3>
+                
+                <AccountDisplay colorFor="allowance" name="Allowance" balance={allowance()}/>
+                
+                <div class='popupfield spaced'>
+                    <label for="transactionName">Name:</label>
+                    <input
+                        id="transactionName"
+                        type="text"
+                        ref={nameRef}
+                    />
+                </div>
+
+                <TagChooser ref={TagChooserRef} hasAddFunctionality={true}/>
+                
+                <div class='popupfield centered'>
+                    <span>Amount:</span>
+                    <span>$
+                        <input 
+                        class='moneyInput'
+                        type='number'
+                        ref={expenseRef}
                         />
-                    </div>
+                    </span>
+                </div>
 
-                    <TagChooser ref={TagChooserRef} hasAddFunctionality={true}/>
-                    
-                    <div class='popupfield centered'>
-                        <span>Amount:</span>
-                        <span>$
-                            <input 
-                            class='moneyInput'
-                            type='number'
-                            ref={expenseRef}
-                            />
-                        </span>
-                    </div>
-
-                    <div class='popupfield spaced'>
-                        <button onClick={() => setShowPopup('')}>Cancel</button>
-                        <button onClick={submit}>{submitButtonString}</button>
-                    </div>
+                <div class='popupfield spaced'>
+                    <button onClick={exitPopup}>Cancel</button>
+                    <button onClick={submit}>{submitButtonString}</button>
                 </div>
             </div>
         </div>

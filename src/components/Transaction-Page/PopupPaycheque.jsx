@@ -3,13 +3,15 @@ import { useMainWrapperContext } from '../../contexts/MainWrapperContext'
 import { useMoney } from '../../contexts/MoneyContext'
 import { TRANSACTIONS_STORE } from '../../utils/db'
 import { getObjectFromCheckbox } from '../../utils/util-functions'
+import usePopup from '../../utils/Popup'
 
 
 export default function PopupPaycheque() {
-    const { editMode, setShowPopup, setCheckboxCount } = useMainWrapperContext();
+    const { exitPopup } = usePopup()
+    const { editMode, setCheckboxCount } = useMainWrapperContext();
     const { 
         transactions, addTransaction, editTransaction, 
-        changeAllowance, totalBudgetCost 
+        changeAllowance, payFreq, totalBudgetCost,
     } = useMoney();
 
     const [prevIncomeAmount, setPrevIncomeAmount] = createSignal(0);
@@ -44,18 +46,18 @@ export default function PopupPaycheque() {
             alert('Please enter a valid amount'); return
         }
 
-        const allowanceAmount = incomeAmount - totalBudgetCost().amount
+        const allowanceAmount = incomeAmount - totalBudgetCost()
         const newTransaction = {
             date: new Date().toISOString().split('T')[0],
             name: 'Pay',
             tag: 'PAYCHEQUE',
             income: incomeAmount,
-            expense: totalBudgetCost().amount,
+            expense: totalBudgetCost()
         }
 
         addTransaction(newTransaction, TRANSACTIONS_STORE);
         changeAllowance(allowanceAmount);
-        setShowPopup('')
+        exitPopup()
     }
 
     const editPaycheque = () => {
@@ -75,39 +77,37 @@ export default function PopupPaycheque() {
         
         document.querySelector('.editModeCheckbox:checked').checked = false
         setCheckboxCount(0)
-        setShowPopup('')
+        exitPopup()
     }
 
     return (
-        <div class='background'>
-            <div class='popup-wrapper'>
-                <div class='popup'>
-                    <h3 class='popupfield alignleft'>{headerString}</h3>
-                    <div class='popupfield centered'>
-                        <span>Earnings:</span>
-                        <span>$
-                            <input 
-                            class='moneyInput'
-                            type='number'
-                            ref={incomeRef}
-                            />
-                        </span>
+        <div class="popup-wrapper">
+            <div class="popup">
+                <h3 class='popupfield alignleft'>{headerString}</h3>
+                <div class='popupfield centered'>
+                    <span>Earnings:</span>
+                    <span>$
+                        <input 
+                        class='moneyInput'
+                        type='number'
+                        ref={incomeRef}
+                        />
+                    </span>
+                </div>
+                <Show when={totalBudgetCost() > 0}>
+                    <span class='popupfield alignleft'>
+                        Per your budget sheet, <br/> the following will be deducted:
+                    </span>
+                    <div id='addPaycheque-budgetExpenseDisplay'>
+                        <span>{payFreq().string} expenses:</span>
+                        <span 
+                            id='addPaycheque-budgetExpenseDisplay-amount'
+                        >– ${totalBudgetCost()}</span>
                     </div>
-                    <Show when={totalBudgetCost().amount > 0}>
-                        <span class='popupfield alignleft'>
-                            Per your budget sheet, <br/> the following will be deducted:
-                        </span>
-                        <div id='addPaycheque-budgetExpenseDisplay'>
-                            <span>{totalBudgetCost().freqStr} expenses:</span>
-                            <span 
-                                id='addPaycheque-budgetExpenseDisplay-amount'
-                            >– ${totalBudgetCost().amount}</span>
-                        </div>
-                    </Show>
-                    <div class='popupfield spaced'>
-                        <button onClick={() => setShowPopup('')}>Cancel</button>
-                        <button onClick={submit}>{submitButtonString}</button>
-                    </div>
+                </Show>
+                <div class='popupfield spaced'>
+                    <button onClick={exitPopup}>Cancel</button>
+                    <button onClick={submit}>{submitButtonString}</button>
                 </div>
             </div>
         </div>

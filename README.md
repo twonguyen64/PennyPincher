@@ -1,36 +1,28 @@
-## Usage
+## About this project
 
-Those templates dependencies are maintained via [pnpm](https://pnpm.io) via `pnpm up -Lri`.
+PennyPincher is a progressive web app (PWA) that is a minimalist budgeting tool, designed so users can quickly & easily:
+- Keep a record of transactions (income, expenses)
+- Create a weekly, biweekly, or monthly budget sheet.
+- Monitor account balances like savings and allowance, which update in real-time in response to changes in your __transaction list__ & __budget sheet__.
+- Create personal savings goals that the user can keep track of their contributions to.
 
-This is the reason you see a `pnpm-lock.yaml`. That being said, any package manager will work. This file can be safely be removed once you clone a template.
 
-```bash
-$ npm install # or pnpm install or yarn install
-```
+The transactions, balances, and other data you input are stored in the browser using [IndexedDB](https://www.w3.org/TR/IndexedDB/).
 
-### Learn more on the [Solid Website](https://solidjs.com) and come chat with us on our [Discord](https://discord.com/invite/solidjs)
+#### For instructions on  how to download PWAs, please see _https://web.dev/learn/pwa/installation_ :)
 
-## Available Scripts
+### Built with [SolidJS](https://github.com/solidjs/solid) & [Dexie.js](https://dexie.org/), (HTML, CSS, JS)
 
-In the project directory, you can run:
 
-### `npm run dev` or `npm start`
+## Project Roadmap
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- [x] List of transactions (income, expenses) with optional user-defined tags to help sort
+- [X] Budget sheet implementation
+- [X] Savings goal implementation
+- [X] Ability to save & load user profile & data
+- [X] Optional payment plan for each savings goal
+    - [X] Display the amount of money the user should contribute each week/biweek/month, based on the end date of the goal.
+    - [ ] Calendar view of all the user's payment plans
+- [ ] Dark mode 
 
-The page will reload if you make edits.<br>
 
-### `npm run build`
-
-Builds the app for production to the `dist` folder.<br>
-It correctly bundles Solid in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
-
-## Deployment
-
-You can deploy the `dist` folder to any static host provider (netlify, surge, now, etc.)
-
-## This project was created with the [Solid CLI](https://github.com/solidjs-community/solid-cli)
